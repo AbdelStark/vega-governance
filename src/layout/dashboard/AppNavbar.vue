@@ -71,7 +71,7 @@
             </base-dropdown>
           </ul>
           <b-modal id="modal-settings" hide-footer>
-            
+
           </b-modal>
         </div>
       </collapse-transition>
