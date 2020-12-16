@@ -38,7 +38,8 @@ describe('Vega Wallet', function () {
             keys = await vegaWallet.listKeys();
             expect(keys).not.to.be.null;
             expect(keys).to.be.an('array').that.has.lengthOf(1);
-            assertKeypair(keys[0]);
+            const signingKey = keys[0];
+            assertKeypair(signingKey);
 
             // Generate new key pair (with meta data)
             console.log('generate new key pair (with meta data)');
@@ -49,6 +50,12 @@ describe('Vega Wallet', function () {
             expect(generateKeypairResponse).to.have.property('key');
             assertKeypair(generateKeypairResponse.key, 2);
 
+            // Sign transaction
+            console.log('sign transaction');
+            const message =  Buffer.from('vega wallet rocks').toString('base64');
+            const signTransactionResponse = await vegaWallet.signTransaction(message, signingKey.pub, false);
+            assertSignedTx(signTransactionResponse.signedTx);
+
             // Logout
             expect(await vegaWallet.logout()).to.be.true;
             expect(vegaWallet.token).to.be.null;
@@ -57,11 +64,19 @@ describe('Vega Wallet', function () {
 });
 
 function assertKeypair(key, expectedMetaDataSize = 0) {
-    expect(key).to.have.property('pub');
-    expect(key).to.have.property('algo');
-    expect(key).to.have.property('tainted');
-    expect(key).to.have.property('meta');
+    expect(key).to.have.haveOwnProperty('pub');
+    expect(key).to.have.haveOwnProperty('algo');
+    expect(key).to.have.haveOwnProperty('tainted');
+    expect(key).to.have.haveOwnProperty('meta');
     if (expectedMetaDataSize !== 0) {
         expect(key.meta).to.be.an('array').that.has.lengthOf(expectedMetaDataSize);
     }
+}
+
+function assertSignedTx(signedTx){
+    expect(signedTx).to.have.haveOwnProperty('tx');
+    expect(signedTx).to.have.haveOwnProperty('sig');
+    expect(signedTx.sig).to.haveOwnProperty('sig');
+    expect(signedTx.sig).to.haveOwnProperty('algo');
+    expect(signedTx.sig).to.haveOwnProperty('version');
 }

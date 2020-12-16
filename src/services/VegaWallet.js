@@ -15,6 +15,7 @@ export default class VegaWallet {
         this.endpointLogout = this.endpointLogin;
         this.endpointGenerateKeypair = `${endpoint}/api/v1/keys`;
         this.endpointListKeys = `${endpoint}/api/v1/keys`;
+        this.endpointSignTransaction = `${endpoint}/api/v1/messages`;
         this._token = null;
     }
 
@@ -45,7 +46,7 @@ export default class VegaWallet {
      * @param passphrase {String} The wallet passphrase.
      * @returns {Promise<boolean>} true if success, false otherwise
      */
-    async loginOrCreate(create, wallet, passphrase){
+    async loginOrCreate(create, wallet, passphrase) {
         try {
             const response = await axios.post(
                 create ? this.endpointCreateWallet : this.endpointLogin,
@@ -88,17 +89,17 @@ export default class VegaWallet {
      * @param meta {Map<String,String>} Meta data associated to the key.
      * @returns {Promise<*>}
      */
-    async generateKeypair(passphrase, meta = null){
+    async generateKeypair(passphrase, meta = null) {
         try {
             const requestPayload = {
                 passphrase: passphrase,
             }
-            if(meta !== null && meta.size > 0){
+            if (meta !== null && meta.size > 0) {
                 const keyMetaData = [];
                 meta.forEach((value, key) => {
                     keyMetaData.push({
-                       key: key,
-                       value: value,
+                        key: key,
+                        value: value,
                     });
                 });
                 requestPayload.meta = keyMetaData;
@@ -111,6 +112,31 @@ export default class VegaWallet {
             return response.data;
         } catch (e) {
             console.error('generateKeypair failed: ', e);
+            throw e;
+        }
+    }
+
+    /**
+     * Sign a transaction using the specified public key.
+     * @param tx {String} The message to sign.
+     * @param pubKey {String} The public key to use.
+     * @param propagate
+     * @returns {Promise<any>}
+     */
+    async signTransaction(tx, pubKey, propagate) {
+        try {
+            const response = await axios.post(
+                this.endpointSignTransaction,
+                {
+                    tx: tx,
+                    pubKey: pubKey,
+                    propagate: propagate,
+                },
+                this.authenticated(),
+            );
+            return response.data;
+        } catch (e) {
+            console.error('signTransaction failed: ', e);
             throw e;
         }
     }
