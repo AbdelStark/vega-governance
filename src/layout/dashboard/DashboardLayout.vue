@@ -2,7 +2,7 @@
   <div class="wrapper">
     <side-bar title="Vega">
       <template slot="links">
-        <sidebar-link :name="$t('sidebar.dashboard')" icon="tim-icons icon-chart-pie-36" to="/dashboard"/>
+        <sidebar-link :name="$t('sidebar.proposals')" icon="tim-icons icon-chart-pie-36" to="/proposals"/>
       </template>
     </side-bar>
     <div class="main-panel">

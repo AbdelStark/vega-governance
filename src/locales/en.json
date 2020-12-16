@@ -3,6 +3,7 @@
   },
   "sidebar": {
     "title": "Vega",
-    "dashboard": "Dashboard"
+    "dashboard": "Dashboard",
+    "proposals": "Proposals"
   }
 }
