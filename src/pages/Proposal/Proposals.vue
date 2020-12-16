@@ -30,11 +30,21 @@
                       {{ proposal.state }}
                     </h3>
                   </div>
+                </div>
+                <div class="row">
                   <div class="col-md-6 pr-md-1">
-                    <h2 style="color: #5cb85c">{{proposal.yesVotes.length}} YES</h2>
+                    <h2 style="color: #5cb85c">{{ proposal.yesVotes.length }} YES</h2>
                   </div>
                   <div class="col-md-6 pr-md-1">
-                    <h2 style="color: #d9534f">{{proposal.noVotes.length}} NO</h2>
+                    <h2 style="color: #d9534f">{{ proposal.noVotes.length }} NO</h2>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <b-progress :max="proposal.yesVotes.length+proposal.noVotes.length">
+                      <b-progress-bar :value="proposal.yesVotes.length" variant="success"></b-progress-bar>
+                      <b-progress-bar :value="proposal.noVotes.length" variant="danger"></b-progress-bar>
+                    </b-progress>
                   </div>
                 </div>
               </div>
