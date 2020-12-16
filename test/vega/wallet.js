@@ -7,7 +7,7 @@ const vegaWallet = new VegaWallet(walletEndpoint);
 
 describe('Vega Wallet', function () {
     describe('#endtoend()', function () {
-        it.only('should work', async function () {
+        it('should work', async function () {
             const now = Date.now().toString();
             const wallet = `wallet-${now}`;
             const passphrase = `passphrase-${now}`;
@@ -61,6 +61,15 @@ describe('Vega Wallet', function () {
             expect(vegaWallet.token).to.be.null;
         });
     });
+
+    /*it.only('should connect to remote wallet', async function () {
+        const walletEndpoint = 'https://wallet.testnet.vega.xyz';
+        const walletID = '0xceE4A1B8fF1Db2fFAbadDDD3f37Cbe3Aa50Fb42d';
+        const passphrase = '73Jmbx4FGmNjQPd8Fn7t968GS9Fwnp';
+        const wallet = new VegaWallet(walletEndpoint);
+        expect(await wallet.login(walletID, passphrase)).to.be.true;
+
+    });*/
 });
 
 function assertKeypair(key, expectedMetaDataSize = 0) {
