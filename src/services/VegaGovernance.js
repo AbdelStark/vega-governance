@@ -22,6 +22,22 @@ export default class VegaGovernance {
             .then(r => r.json());
         return await data;
     }
+
+    async listProposalsByParty(id) {
+        const data = fetch(this.endpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify({
+                query: query.listProposalsByParty,
+                variables: {id},
+            })
+        })
+            .then(r => r.json());
+        return await data;
+    }
 }
 
 

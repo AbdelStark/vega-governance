@@ -9,8 +9,9 @@ const vegaGovernance = new VegaGovernance(governanceEndpoint);
 describe('Vega Governance', function () {
     describe('#endtoend()', function () {
         it.only('should work', async function () {
-            const proposals = await vegaGovernance.listProposals();
-            console.log(proposals);
+            console.log(await vegaGovernance.listProposalsByParty('26af80a94f3fbd595e1d8bdabcc24fe8cecf89778e677322f1143145113571a6'));
+            console.log(await vegaGovernance.listProposalsByParty('9c45820e31fcd4bbea6a7b15c50006b30c03c850d7acd3a52760a1dfa31b040a'));
+
         });
     });
 });
