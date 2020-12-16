@@ -1,0 +1,1 @@
+console.log('loading notification service worker');

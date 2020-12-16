@@ -24,23 +24,19 @@ import router from "./router/index";
 import BlackDashboard from "./plugins/blackDashboard";
 import i18n from "./i18n";
 import './registerServiceWorker';
-import VegaWallet from "@/services/VegaWallet";
-import VegaGovernanceMock from "@/services/mock/VegaGovernanceMock";
-import VegaGovernance from "@/services/VegaGovernance";
+import settings from "@/settings";
+import services from "@/service-factory";
+import {
+    check as checkNotifications,
+    registerServiceWorker as registerNotificationsServiceWorker,
+    requestNotificationPermission
+} from "@/services/notification/notifications";
 
 Vue.use(BlackDashboard);
 Vue.use(VueRouter);
 Vue.use(RouterPrefetch);
 Vue.use(Vuex);
 
-const mock = true;
-const settings = buildSettings();
-let services;
-if (mock) {
-    services = buildMockServices(settings);
-} else {
-    services = buildServices(settings);
-}
 // create store
 const store = new Vuex.Store({
     state: {
@@ -58,50 +54,9 @@ new Vue({
     store,
 }).$mount("#app");
 
-router.push({path: '/'});
+checkNotifications();
+registerNotificationsServiceWorker().then(registration => services.notification = registration);
+requestNotificationPermission().then(console.log);
 
-function buildSettings() {
-    if (localStorage.getItem('settings')) {
-        return settingsFromLocalStorage();
-    }
-    return defaultSettings();
-}
 
-function settingsFromLocalStorage() {
-    console.log('retrieving settings from local storage');
-    try {
-        return JSON.parse(localStorage.getItem('settings'));
-    } catch (e) {
-        console.error(e);
-        localStorage.removeItem('settings');
-        return defaultSettings();
-    }
-}
 
-function defaultSettings() {
-    console.log('loading default application settings');
-    return {
-        vega: {
-            wallet: {
-                endpoint: 'http://127.0.0.1:1789',
-            },
-            governance: {
-                endpoint: 'https://lb.testnet.vega.xyz/query',
-            }
-        }
-    };
-}
-
-function buildMockServices(settings) {
-    return {
-        vegaWallet: new VegaWallet(settings.vega.wallet.endpoint),
-        vegaGovernance: new VegaGovernanceMock(),
-    };
-}
-
-function buildServices(settings) {
-    return {
-        vegaWallet: new VegaWallet(settings.vega.wallet.endpoint),
-        vegaGovernance: new VegaGovernance(settings.vega.governance.endpoint),
-    };
-}

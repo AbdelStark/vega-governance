@@ -2,6 +2,7 @@
 import NotFound from "@/pages/NotFoundPage.vue";
 import DashboardLayout from "@/layout/dashboard/DashboardLayout";
 import Proposals from "@/pages/Proposal/Proposals";
+import Debug from "@/pages/Debug/Debug";
 
 const routes = [
   {
@@ -14,6 +15,11 @@ const routes = [
         path: 'proposals',
         name: 'proposals',
         components: {default: Proposals}
+      },
+      {
+        path: 'debug',
+        name: 'debug',
+        components: {default: Debug}
       },
     ]
   },

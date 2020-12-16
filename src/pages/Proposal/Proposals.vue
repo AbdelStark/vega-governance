@@ -19,7 +19,7 @@
                   <div class="col-md-6 pr-md-1">
                     <h5 class="card-category">Reference</h5>
                     <h3 class="card-title">
-                      <i class="tim-icons icon-badge text-success"></i>
+                      <i class="tim-icons icon-link-72 text-success"></i>
                       {{ proposal.reference }}
                     </h3>
                   </div>
@@ -77,7 +77,6 @@ export default {
   },
   mounted() {
     this.proposals = this.services.vegaGovernance.listProposals();
-    console.log(this.proposals);
   },
   methods: {},
 };
