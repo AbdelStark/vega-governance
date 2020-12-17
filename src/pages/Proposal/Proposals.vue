@@ -26,7 +26,7 @@
                   <div class="col-md-6 pr-md-1">
                     <h5 class="card-category">State</h5>
                     <h3 class="card-title">
-                      <i class="tim-icons icon-button-power text-success"></i>
+                      <i :class="classForProposalState(proposal.state)"></i>
                       {{ proposal.state }}
                     </h3>
                   </div>
@@ -75,9 +75,20 @@ export default {
       'settings',
     ])
   },
-  mounted() {
-    this.proposals = this.services.vegaGovernance.listProposals();
+  async mounted() {
+    const response = await this.services.vegaGovernance.listProposals();
+    this.proposals = response.data.proposals;
   },
-  methods: {},
+  methods: {
+    classForProposalState(state) {
+      if (state === 'Open') {
+        return 'tim-icons icon-button-power text-success';
+      } else if (state === 'Rejected') {
+        return 'tim-icons icon-button-power text-danger';
+      } else {
+      }
+      return 'tim-icons';
+    }
+  },
 };
 </script>

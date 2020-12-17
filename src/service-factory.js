@@ -3,7 +3,9 @@ import VegaGovernanceMock from "@/services/mock/VegaGovernanceMock";
 import VegaGovernance from "@/services/VegaGovernance";
 import settings from "@/settings";
 
-const services = buildMockServices();
+//const services = buildMockServices();
+const services = buildServices();
+
 
 function buildMockServices() {
     return {
