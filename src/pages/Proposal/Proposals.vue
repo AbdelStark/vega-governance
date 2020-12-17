@@ -84,7 +84,7 @@ export default {
     classForProposalState(state) {
       if (state === 'Open') {
         return 'tim-icons icon-button-power text-success';
-      } else if (state === 'Rejected') {
+      } else if (state === 'Rejected' || state === 'Declined') {
         return 'tim-icons icon-button-power text-danger';
       } else {
       }
