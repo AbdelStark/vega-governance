@@ -15,7 +15,10 @@
                 <div class="block block-three"></div>
                 <div class="block block-four"></div>
 
-                <h3 class="title">{{ proposalTitle(proposal) }}</h3>
+                <h3 class="title" @click="showProposalDetails(proposal)">
+                  {{ proposalTitle(proposal) }}
+                  <font-awesome-icon icon="info-circle" />
+                </h3>
                 <div class="row">
                   <div class="col-md-12">
                     <h2>{{ formatDate(proposal.datetime) }}</h2>
@@ -88,6 +91,10 @@ export default {
     console.log(this.proposals);
   },
   methods: {
+    showProposalDetails(proposal){
+      console.log(proposal);
+      this.$notifyMessage('success', 'Proposal info.');
+    },
     proposalTitle(proposal){
       return guessProposalChangeType(proposal);
     },
