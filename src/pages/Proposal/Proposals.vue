@@ -78,6 +78,7 @@ export default {
   async mounted() {
     const response = await this.services.vegaGovernance.listProposals();
     this.proposals = response.data.proposals;
+    console.log(this.proposals);
   },
   methods: {
     classForProposalState(state) {

@@ -1,5 +1,6 @@
 const fetch = require('node-fetch');
 import {query} from "./query";
+
 export default class VegaGovernance {
 
     /**

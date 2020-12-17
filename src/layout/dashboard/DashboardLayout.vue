@@ -3,7 +3,8 @@
     <side-bar title="Vega">
       <template slot="links">
         <sidebar-link :name="$t('sidebar.proposals')" icon="tim-icons icon-chart-pie-36" to="/proposals"/>
-        <!--sidebar-link name="Debug" icon="tim-icons icon-controller" to="/debug"/-->
+        <sidebar-link :name="$t('sidebar.wallet')" icon="tim-icons icon-key-25" to="/wallet"/>
+        <!--sidebar-link :name="$t('sidebar.debug')" icon="tim-icons icon-controller" to="/debug"/-->
       </template>
     </side-bar>
     <div class="main-panel">
