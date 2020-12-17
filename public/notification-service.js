@@ -1,4 +1,10 @@
+
 console.log('loading notification service worker');
+const webSocket = new WebSocket("wss://lb.testnet.vega.xyz/query", "graphql-ws");
+webSocket.onopen = event => {
+    console.log('web socket opened');
+    console.log(event);
+}
 self.importScripts('subscriptions.js');
 self.addEventListener('install', event => {
     const config = new URL(location).searchParams.get('config');
