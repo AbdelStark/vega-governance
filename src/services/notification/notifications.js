@@ -7,8 +7,9 @@ const check = () => {
     }
 }
 
-const registerServiceWorker = async () => {
-    return await navigator.serviceWorker.register('notification-service.js');
+const registerServiceWorker = async (settings) => {
+    const swUrl = 'notification-service.js?config=' + encodeURIComponent(JSON.stringify(settings));
+    return await navigator.serviceWorker.register(swUrl);
 }
 
 const requestNotificationPermission = async () => {

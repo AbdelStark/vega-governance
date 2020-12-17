@@ -55,8 +55,6 @@ new Vue({
 }).$mount("#app");
 
 checkNotifications();
-registerNotificationsServiceWorker().then(registration => services.notification = registration);
+registerNotificationsServiceWorker(settings).then(registration => services.notification = registration);
 requestNotificationPermission().then(console.log);
-
-
 
