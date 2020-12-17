@@ -14,7 +14,13 @@
                 <div class="block block-two"></div>
                 <div class="block block-three"></div>
                 <div class="block block-four"></div>
-                <h3 class="title">{{ proposal.id }}</h3>
+
+                <h3 class="title">{{ proposalTitle(proposal) }}</h3>
+                <div class="row">
+                  <div class="col-md-12">
+                    <h2>{{ formatDate(proposal.datetime) }}</h2>
+                  </div>
+                </div>
                 <div class="row">
                   <div class="col-md-6 pr-md-1">
                     <h5 class="card-category">Reference</h5>
@@ -59,6 +65,7 @@
 <script>
 import {FadeTransition} from 'vue2-transitions';
 import {mapState} from "vuex";
+import {guessProposalChangeType} from "@/util/proposal-util";
 
 export default {
   components: {
@@ -81,6 +88,13 @@ export default {
     console.log(this.proposals);
   },
   methods: {
+    proposalTitle(proposal){
+      return guessProposalChangeType(proposal);
+    },
+    formatDate(iso8601Date) {
+      const date = new Date(Date.parse(iso8601Date));
+      return date.toLocaleDateString() + " " + date.toLocaleTimeString();
+    },
     classForProposalState(state) {
       if (state === 'Open') {
         return 'tim-icons icon-button-power text-success';
