@@ -23,7 +23,7 @@
                 <base-input type="password" v-model="loginData.passphrase"></base-input>
               </div>
               <div class="col-md-12 mt-2">
-                <base-button block @click="login">Login</base-button>
+                <base-button block class="btn-info" @click="login">Login</base-button>
               </div>
             </div>
           </card>
@@ -41,8 +41,8 @@
                   </label>
                   <base-input type="passphrase" v-model="keyPairPairData.passphrase"></base-input>
                 </div>
-                <div class="col-md-6 mt-2">
-                  <base-button block @click="generateKeyPair">Generate Key Pair</base-button>
+                <div class="col-md-12 mt-2">
+                  <base-button block class="btn-info" @click="generateKeyPair">Generate Key Pair</base-button>
                 </div>
               </div>
             </card>

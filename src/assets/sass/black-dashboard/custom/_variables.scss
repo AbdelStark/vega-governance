@@ -4,6 +4,12 @@
 @import "mixins";
 // Global settings
 
+// vega colors
+// green
+$vega-green-4: #15B371 !default;
+// blue
+$vega-blue-4: #2B95D6 !default;
+
 $enable-caret: true !default;
 $enable-rounded: true !default;
 $enable-shadows: true !default;
@@ -99,7 +105,8 @@ $default-color-opacity: rgba(182, 182, 182, .6) !default;
 $orange-color: #f96332 !default;
 
 $default: #344675 !default;
-$primary: #e14eca !default;
+//$primary: #e14eca !default;
+$primary: $vega-green-4;
 $secondary: #f4f5f7 !default;
 $success: #00f2c3 !default;
 $info: #1d8cf8 !default;
@@ -144,8 +151,10 @@ $light: $gray-500 !default;
 $dark: $gray-900 !default;
 $darker: darken($gray-900, 15%) !default;
 
-$vega: #102027 !default;
-$vega-states: darken($vega, 5%) !default;
+
+$vega-dark-gray-1: #182026 !default;
+$vega-dark-gray-1-states: darken($vega-dark-gray-1, 5%) !default;
+
 $facebook: #3b5998 !default;
 $facebook-states: darken($facebook, 5%) !default;
 $twitter: #55acee !default;
@@ -896,7 +905,8 @@ $card-border-color: rgba($black, .05);
 $card-inner-border-radius: calc(#{$card-border-radius} - #{$card-border-width});
 $card-cap-bg: $gray-100 !default;
 $card-bg: $white !default;
-$card-black-background: #27293d !default;
+//$card-black-background: #27293d !default;
+$card-black-background: $vega-dark-gray-1 !default;
 $card-img-overlay-padding: 1.25rem !default;
 
 //$card-group-margin:                 ($grid-gutter-width / 2);
