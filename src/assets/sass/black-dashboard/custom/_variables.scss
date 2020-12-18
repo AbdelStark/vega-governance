@@ -144,6 +144,8 @@ $light: $gray-500 !default;
 $dark: $gray-900 !default;
 $darker: darken($gray-900, 15%) !default;
 
+$vega: #102027 !default;
+$vega-states: darken($vega, 5%) !default;
 $facebook: #3b5998 !default;
 $facebook-states: darken($facebook, 5%) !default;
 $twitter: #55acee !default;
