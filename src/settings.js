@@ -40,7 +40,7 @@ function defaultSettings() {
                 endpoint: 'https://wallet.testnet.vega.xyz',
             },
             governance: {
-                endpoint: 'https://lb.testnet.vega.xyz/query',
+                endpoint: 'https://lb.testnet.vega.xyz',
             }
         }
     };

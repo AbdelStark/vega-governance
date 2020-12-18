@@ -6,7 +6,7 @@ import {data as proposalsData} from './proposals';
 
 describe('Vega Governance', function () {
     describe('#parse()', function () {
-        it.only('should work', async function () {
+        it('should work', async function () {
             const proposal1 = proposalsData.proposals[0];
             console.log(proposal1.datetime);
             const parsedDate = new Date(Date.parse(proposal1.datetime));
