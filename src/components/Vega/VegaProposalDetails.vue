@@ -1,5 +1,5 @@
 <template>
-  <card>
+  <div>
     <div class="row">
       <div class="col-md-6 mt-2">
         <label>
@@ -19,7 +19,7 @@
     <div v-if="isNewMarket">
       <vega-proposal-change-new-market :change="proposal.terms.change"></vega-proposal-change-new-market>
     </div>
-  </card>
+  </div>
 </template>
 
 <script>

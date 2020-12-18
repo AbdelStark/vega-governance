@@ -54,23 +54,9 @@
         </div>
       </div>
       <div class="row" :v-if="change.riskParameters.hasOwnProperty('params')">
-        <div class="col-md-12 mt-2">
-          <label>
-            Mu
-          </label>
-          <h4> {{ change.riskParameters.params.mu }}</h4>
-        </div>
-        <div class="col-md-12 mt-2">
-          <label>
-            R
-          </label>
-          <h4> {{ change.riskParameters.params.r }}</h4>
-        </div>
-        <div class="col-md-12 mt-2">
-          <label>
-            Sigma
-          </label>
-          <h4> {{ change.riskParameters.params.sigma }}</h4>
+        <div class="col-md-12">
+          <h4>Mu {{ change.riskParameters.params.mu }} - R {{ change.riskParameters.params.r }} - Sigma
+            {{ change.riskParameters.params.sigma }}</h4>
         </div>
       </div>
       <!--/card-->
