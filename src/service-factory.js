@@ -16,9 +16,11 @@ function buildMockServices() {
 
 function buildServices() {
     return {
-        vegaWallet: new VegaWallet(settings.vega.wallet.endpoint),
+        vegaWallet: new VegaWallet(settings.vega.wallet.endpoint, localStorage.getItem("vega-token")),
         vegaGovernance: new VegaGovernance(settings.vega.governance.endpoint),
     };
 }
+
+
 
 export default services;

@@ -23,7 +23,7 @@ function defaultSettings() {
     return {
         vega: {
             wallet: {
-                endpoint: 'http://127.0.0.1:1789',
+                endpoint: 'https://wallet.testnet.vega.xyz',
             },
             governance: {
                 endpoint: 'https://lb.testnet.vega.xyz/query',

@@ -7,8 +7,9 @@ export default class VegaWallet {
     /**
      * Build a new Vega Wallet service.
      * @param endpoint {String} Root URL of the wallet.
+     * @param token for the Vega Wallet
      */
-    constructor(endpoint) {
+    constructor(endpoint, token = null) {
         this.endpoint = endpoint;
         this.endpointCreateWallet = `${endpoint}/api/v1/wallets`;
         this.endpointLogin = `${endpoint}/api/v1/auth/token`;
@@ -16,7 +17,7 @@ export default class VegaWallet {
         this.endpointGenerateKeypair = `${endpoint}/api/v1/keys`;
         this.endpointListKeys = `${endpoint}/api/v1/keys`;
         this.endpointSignTransaction = `${endpoint}/api/v1/messages`;
-        this._token = null;
+        this._token = token;
     }
 
     /**
