@@ -20,7 +20,8 @@
                     <base-button
                         v-b-toggle="proposalDetailsCollapseId(proposal)"
                         class="btn btn-lg btn-simple mb-4 btn-primary" block>
-                      {{ proposalTitle(proposal) }}  <font-awesome-icon icon="info-circle"/>
+                      {{ proposalTitle(proposal) }}
+                      <font-awesome-icon icon="info-circle"/>
                     </base-button>
                   </div>
                 </div>
@@ -46,11 +47,11 @@
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-md-6 pr-md-1">
-                    <h2 style="color: #5cb85c">{{ proposal.yesVotes.length }} YES</h2>
+                  <div class="col-md-6 h2" style="color: #5cb85c; display: inline-block; width: 50%;">
+                    {{ proposal.yesVotes.length }} YES
                   </div>
-                  <div class="col-md-6 pr-md-1">
-                    <h2 style="color: #d9534f">{{ proposal.noVotes.length }} NO</h2>
+                  <div class="col-md-6 h2" style="color: #d9534f;  display: inline-block; width: 50%;">
+                    {{ proposal.noVotes.length }} NO
                   </div>
                 </div>
                 <div class="row">
@@ -61,6 +62,28 @@
                     </b-progress>
                   </div>
                 </div>
+
+
+                <div class="row">
+                  <table class="mt-2" style="text-align: center">
+                    <tr>
+                      <td>
+                        <font-awesome-icon @click="onVoteYes(proposal)"
+                                           style="color: #00f2c3; display: inline-block; width: 100%;"
+                                           class="fa-3x"
+                                           icon="thumbs-up"></font-awesome-icon>
+                      </td>
+                      <td>
+                        <font-awesome-icon @click="onVoteNo(proposal)"
+                                           style="color: #fd5d93; display: inline-block; width: 100%;"
+                                           class="fa-3x"
+                                           icon="thumbs-down"></font-awesome-icon>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+              <div>
               </div>
               <b-collapse :id="proposalDetailsCollapseId(proposal)" class="mt-2">
                 <vega-proposal-details :proposal="proposal">
@@ -106,6 +129,12 @@ export default {
     }
   },
   methods: {
+    onVoteYes(proposal) {
+      console.log('user voted YES for proposal: ', proposal.id);
+    },
+    onVoteNo(proposal) {
+      console.log('user voted NO for proposal: ', proposal.id);
+    },
     proposalDetailsCollapseId(proposal) {
       return 'collapse-proposal-details-' + proposal.id;
     },
