@@ -77,7 +77,7 @@
 import {FadeTransition} from 'vue2-transitions';
 import {mapState} from "vuex";
 import {guessProposalChangeType} from "@/util/proposal-util";
-import VegaProposalDetails from "@/components/VegaProposalDetails";
+import VegaProposalDetails from "@/components/Vega/VegaProposalDetails";
 
 export default {
   components: {
@@ -98,14 +98,8 @@ export default {
   async mounted() {
     const response = await this.services.vegaGovernance.listProposals();
     this.proposals = response.data.proposals;
-    console.log(this.proposals);
   },
   methods: {
-    showProposalDetails(proposal) {
-      console.log(proposal);
-      //this.$notifyMessage('success', 'Proposal info.');
-      proposal.showDetails = true;
-    },
     proposalDetailsCollapseId(proposal) {
       return 'collapse-proposal-details-' + proposal.id;
     },

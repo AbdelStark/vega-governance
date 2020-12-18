@@ -23,5 +23,6 @@ function guessProposalChangeType(proposal){
 
 export {
     guessProposalChangeType,
+    proposalChangeTypes
 }
 
