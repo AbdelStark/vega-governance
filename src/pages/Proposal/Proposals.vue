@@ -16,7 +16,7 @@
                 <div class="block block-four"></div>
 
                 <label
-                    @click="showProposalDetails(proposal)"
+                    v-b-toggle="proposalDetailsCollapseId(proposal)"
                     class="btn btn-lg btn-simple mb-4 btn-primary"
                 >
                   {{ proposalTitle(proposal) }}
@@ -60,6 +60,11 @@
                   </div>
                 </div>
               </div>
+              <b-collapse :id="proposalDetailsCollapseId(proposal)" class="mt-2">
+                <vega-proposal-details :proposal="proposal">
+
+                </vega-proposal-details>
+              </b-collapse>
             </card>
           </div>
         </card>
@@ -72,9 +77,11 @@
 import {FadeTransition} from 'vue2-transitions';
 import {mapState} from "vuex";
 import {guessProposalChangeType} from "@/util/proposal-util";
+import VegaProposalDetails from "@/components/VegaProposalDetails";
 
 export default {
   components: {
+    VegaProposalDetails,
     FadeTransition
   },
   data() {
@@ -96,7 +103,11 @@ export default {
   methods: {
     showProposalDetails(proposal) {
       console.log(proposal);
-      this.$notifyMessage('success', 'Proposal info.');
+      //this.$notifyMessage('success', 'Proposal info.');
+      proposal.showDetails = true;
+    },
+    proposalDetailsCollapseId(proposal) {
+      return 'collapse-proposal-details-' + proposal.id;
     },
     proposalTitle(proposal) {
       return guessProposalChangeType(proposal);
