@@ -1,32 +1,60 @@
 const listProposals = `
-query{
+query {
   proposals {
     id
     datetime
-    party { id }
+    party {
+      id
+    }
     reference
     state
-    terms { closingDatetime, enactmentDatetime,
-      change 
-      {
-       ... on NewMarket {
-          instrument { code }
+    terms {
+      closingDatetime
+      enactmentDatetime
+      change {
+        ... on NewMarket {
+          instrument {
+            code
+          }
           decimalPlaces
+          riskParameters {
+            ... on LogNormalRiskModel {
+              tau
+              riskAversionParameter
+              params {
+                r
+                sigma
+                mu
+              }
+            }
+          }
         }
         ... on NewAsset {
-          source{
-            ... on BuiltinAsset{
+          source {
+            ... on BuiltinAsset {
               id
             }
           }
         }
       }
     }
-    yesVotes { value, party { id }, datetime}
-    noVotes { value, party { id }, datetime}
-  
+    yesVotes {
+      value
+      party {
+        id
+      }
+      datetime
+    }
+    noVotes {
+      value
+      party {
+        id
+      }
+      datetime
+    }
   }
 }
+
 `;
 
 const listProposalsByParty = `
