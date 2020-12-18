@@ -55,7 +55,7 @@
                 </div>
                 <b class="caret d-none d-lg-block d-xl-block"></b>
                 <p class="d-lg-none">
-                  Log out
+                  Wallet
                 </p>
               </a>
               <li class="nav-link">
@@ -66,12 +66,29 @@
               </li>
               <div class="dropdown-divider"></div>
               <li class="nav-link">
-                <a class="nav-item dropdown-item" href="#">Log out</a>
+                <a v-if="isLogged" class="nav-item dropdown-item" href="#" @click="logout">Log out</a>
+                <a v-else class="nav-item dropdown-item" href="#" @click="login">Log in</a>
               </li>
             </base-dropdown>
           </ul>
-          <b-modal id="modal-settings" hide-footer>
-
+          <b-modal id="modal-settings" title="Settings" hide-footer>
+            <div class="row">
+              <div class="col-md-12 mt-2">
+                <label>Wallet URL </label>
+                <input class="form-control" style="color: black" v-model="walletUrl"></input>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12 mt-2">
+                <label>Governance URL </label>
+                <input class="form-control" style="color: black" v-model="governanceUrl"></input>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12 mt-2">
+                <base-button block @click="validate">Validate</base-button>
+              </div>
+            </div>
           </b-modal>
         </div>
       </collapse-transition>
@@ -82,6 +99,8 @@
 import {CollapseTransition} from 'vue2-transitions';
 import Modal from '@/components/Modal';
 import {mapState} from "vuex";
+import {settingsFromLocalStorage, updateSettingsOnLocalStorage} from "@/settings";
+import {buildServices} from "@/service-factory";
 
 export default {
   components: {
@@ -96,9 +115,18 @@ export default {
     isRTL() {
       return this.$rtl.isRTL;
     },
+    isLogged (){
+      return this.services.vegaWallet.token != null;
+    },
     ...mapState([
+      'services',
       'settings',
     ])
+  },
+  async mounted() {
+    console.log("app", this.settings);
+    this.walletUrl = this.settings.vega.wallet.endpoint;
+    this.governanceUrl = this.settings.vega.governance.endpoint;
   },
   data() {
     return {
@@ -106,6 +134,8 @@ export default {
       showMenu: false,
       searchModalVisible: false,
       searchQuery: '',
+      walletUrl : '',
+      governanceUrl : ''
     };
   },
   methods: {
@@ -133,9 +163,32 @@ export default {
     },
     toggleMenu() {
       this.showMenu = !this.showMenu;
+    },
+    async logout (){
+      const isSuccess = await this.services.vegaWallet.logout();
+      if(isSuccess){
+        localStorage.removeItem("vega-token");
+        this.$router.push("/");
+      }
+    },
+    async login(){
+      this.$router.push("/wallet");
+    },
+    async validate () {
+      updateSettingsOnLocalStorage((settings)=>{
+          settings.vega.wallet.endpoint = this.walletUrl;
+        settings.vega.governance.endpoint = this.governanceUrl;
+      });
+      this.settings.vega.wallet.endpoint= this.walletUrl;
+      this.settings.vega.governance.endpoint= this.governanceUrl;
+      this.$store.commit("updateServices", this.settings);
+      window.location.reload();
     }
   }
 };
 </script>
-<style>
+<style scoped>
+ input.form-control{
+   color: black!important;
+ }
 </style>

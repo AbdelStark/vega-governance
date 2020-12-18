@@ -101,13 +101,13 @@ export default {
     ])
   },
   async mounted() {
-    if (this.isLogged) {
-      await this.loadAuthenticatedData();
-    }
+    await this.loadAuthenticatedData();
   },
   methods: {
     async loadAuthenticatedData() {
-      this.addresses = await this.services.vegaWallet.listKeys();
+      if (this.isLogged) {
+        this.addresses = await this.services.vegaWallet.listKeys();
+      }
     },
     async login() {
       const isSuccess = await this.services.vegaWallet.login(this.loginData.walletId, this.loginData.passphrase);

@@ -4,7 +4,9 @@ function buildSettings() {
     if (localStorage.getItem('settings')) {
         return settingsFromLocalStorage();
     }
-    return defaultSettings();
+    const settings = defaultSettings();
+    localStorage.setItem("settings", JSON.stringify(settings));
+    return settings;
 }
 
 function settingsFromLocalStorage() {
@@ -15,6 +17,18 @@ function settingsFromLocalStorage() {
         console.error(e);
         localStorage.removeItem('settings');
         return defaultSettings();
+    }
+}
+
+function updateSettingsOnLocalStorage(updater) {
+    console.log('updating settings on local storage');
+    try {
+        const settings = JSON.parse(localStorage.getItem('settings'));
+
+        updater(settings);
+        localStorage.setItem("settings", JSON.stringify(settings));
+    } catch (e) {
+        console.error(e);
     }
 }
 
@@ -33,3 +47,4 @@ function defaultSettings() {
 }
 
 export default settings;
+export {settingsFromLocalStorage, updateSettingsOnLocalStorage}

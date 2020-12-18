@@ -21,6 +21,13 @@ function buildServices() {
     };
 }
 
+function buildServicesFromSettings(settings) {
+    return {
+        vegaWallet: new VegaWallet(settings.vega.wallet.endpoint, localStorage.getItem("vega-token")),
+        vegaGovernance: new VegaGovernance(settings.vega.governance.endpoint),
+    };
+}
 
 
 export default services;
+export {buildServices, buildServicesFromSettings}
