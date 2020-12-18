@@ -15,10 +15,13 @@
                 <div class="block block-three"></div>
                 <div class="block block-four"></div>
 
-                <h3 class="title" @click="showProposalDetails(proposal)">
+                <label
+                    @click="showProposalDetails(proposal)"
+                    class="btn btn-lg btn-simple mb-4 btn-primary"
+                >
                   {{ proposalTitle(proposal) }}
-                  <font-awesome-icon icon="info-circle" />
-                </h3>
+                  <font-awesome-icon icon="info-circle"/>
+                </label>
                 <div class="row">
                   <div class="col-md-12">
                     <h2>{{ formatDate(proposal.datetime) }}</h2>
@@ -91,11 +94,11 @@ export default {
     console.log(this.proposals);
   },
   methods: {
-    showProposalDetails(proposal){
+    showProposalDetails(proposal) {
       console.log(proposal);
       this.$notifyMessage('success', 'Proposal info.');
     },
-    proposalTitle(proposal){
+    proposalTitle(proposal) {
       return guessProposalChangeType(proposal);
     },
     formatDate(iso8601Date) {
