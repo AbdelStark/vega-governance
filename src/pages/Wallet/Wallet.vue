@@ -50,7 +50,7 @@
               <div class="row" v-for="address in addresses" :key="address.pub">
                 <div class="col-md-12 mt-2">
                   {{ address.pub }}
-                  <label>
+                  <label class="ml-2">
                     <i class="tim-icons icon-key-25 mr-2"></i>
                     Algo : {{ address.algo }}
                   </label>
