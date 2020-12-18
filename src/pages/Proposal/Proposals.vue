@@ -15,19 +15,12 @@
                 <div class="block block-three"></div>
                 <div class="block block-four"></div>
 
-                <!--label
-                    v-b-toggle="proposalDetailsCollapseId(proposal)"
-                    class="btn btn-lg btn-simple mb-4 btn-primary"
-                >
-                  {{ proposalTitle(proposal) }}
-                  <font-awesome-icon icon="info-circle"/>
-                </label-->
                 <div class="row">
                   <div class="col-md-12">
                     <base-button
                         v-b-toggle="proposalDetailsCollapseId(proposal)"
                         class="btn btn-lg btn-simple mb-4 btn-primary" block>
-                      {{ proposalTitle(proposal) }}  <font-awesome-icon icon="info-circle"/> 
+                      {{ proposalTitle(proposal) }}  <font-awesome-icon icon="info-circle"/>
                     </base-button>
                   </div>
                 </div>

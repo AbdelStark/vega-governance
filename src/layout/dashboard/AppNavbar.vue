@@ -99,8 +99,8 @@
 import {CollapseTransition} from 'vue2-transitions';
 import Modal from '@/components/Modal';
 import {mapState} from "vuex";
-import {settingsFromLocalStorage, updateSettingsOnLocalStorage} from "@/settings";
-import {buildServices} from "@/service-factory";
+import { updateSettingsOnLocalStorage} from "@/settings";
+
 
 export default {
   components: {
@@ -124,7 +124,6 @@ export default {
     ])
   },
   async mounted() {
-    console.log("app", this.settings);
     this.walletUrl = this.settings.vega.wallet.endpoint;
     this.governanceUrl = this.settings.vega.governance.endpoint;
   },
@@ -140,7 +139,8 @@ export default {
   },
   methods: {
     showSettings(){
-      this.$bvModal.show('modal-settings');
+      //this.$bvModal.show('modal-settings');
+      this.$router.push('settings');
     },
     saveSettings(){
       this.$bvModal.hide('modal-settings');
