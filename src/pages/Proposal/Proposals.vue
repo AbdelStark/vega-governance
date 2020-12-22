@@ -125,7 +125,6 @@ export default {
   async mounted() {
     try {
       const response = await this.services.vegaGovernance.listProposals();
-      console.log(JSON.stringify(response));
       this.proposals = response.data.proposals;
     } catch (e) {
       this.$notifyMessage("danger", "Cannot load, check settings");
