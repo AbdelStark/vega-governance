@@ -2,18 +2,18 @@
   <div>
     <div class="row">
       <div class="col-md-6 mt-2">
-        <label>
+        <label class="vegaTitle">
           <font-awesome-icon icon="calendar-alt"></font-awesome-icon>
-          Closing
+          CLOSING
         </label>
-        <h4> {{formatDate(proposal.terms.closingDatetime)}}</h4>
+        <h4 class="vegaLabel"> {{formatDate(proposal.terms.closingDatetime)}}</h4>
       </div>
       <div class="col-md-6 mt-2">
-        <label>
+        <label class="vegaTitle">
           <font-awesome-icon icon="calendar-alt"></font-awesome-icon>
-          Enactement
+          ENACTEMENT
         </label>
-        <h4> {{formatDate(proposal.terms.enactmentDatetime)}}</h4>
+        <h4 class="vegaLabel"> {{formatDate(proposal.terms.enactmentDatetime)}}</h4>
       </div>
     </div>
     <div v-if="isNewMarket">

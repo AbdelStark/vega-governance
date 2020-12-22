@@ -17,48 +17,43 @@
 
                 <div class="row">
                   <div class="col-md-12">
-                    <base-button
-                        v-b-toggle="proposalDetailsCollapseId(proposal)"
-                        class="btn btn-lg btn-simple mb-4 btn-primary" block>
-                      {{ proposalTitle(proposal) }}
-                      <font-awesome-icon icon="info-circle"/>
-                    </base-button>
+                    <h4 class="vegaTitle">{{ proposalTitle(proposal) }}</h4>
+                    <h4 class="vegaLabel" v-if="proposalSubtitleTitle(proposal) !== null">{{ proposalSubtitleTitle(proposal) }}</h4>
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-md-12">
-                    <h2>{{ formatDate(proposal.datetime) }}</h2>
+                    <h4 class="vegaTitle">DEADLINE</h4>
+                    <h4 class="vegaLabel">{{ formatDate(proposal.datetime) }}</h4>
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-md-6 pr-md-1">
-                    <h5 class="card-category">Reference</h5>
-                    <h3 class="card-title">
-                      <i class="tim-icons icon-link-72 text-success"></i>
-                      {{ proposal.reference }}
-                    </h3>
-                  </div>
-                  <div class="col-md-6 pr-md-1">
-                    <h5 class="card-category">State</h5>
-                    <h3 class="card-title">
-                      <i :class="classForProposalState(proposal.state)"></i>
-                      {{ proposal.state }}
-                    </h3>
+                  <div class="col-md-12 pr-md-1">
+                    <h4 class="vegaTitle">STATUS</h4>
+                    <h4 class="vegaLabel">{{ proposal.state }}</h4>
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-md-6 h2" style="color: #5cb85c; display: inline-block; width: 50%;">
-                    {{ proposal.yesVotes.length }} YES
-                  </div>
-                  <div class="col-md-6 h2" style="color: #d9534f;  display: inline-block; width: 50%;">
-                    {{ proposal.noVotes.length }} NO
+                  <div class="col-md-12 pr-md-1">
+                    <h4 class="vegaTitle">VOTES FOR / AGAINST</h4>
+                    <h4 class="vegaLabel">{{ proposal.yesVotes.length }}  / {{ proposal.noVotes.length }}</h4>
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-md-12">
-                    <b-progress :max="proposal.yesVotes.length+proposal.noVotes.length">
-                      <b-progress-bar :value="proposal.yesVotes.length" variant="success"></b-progress-bar>
-                      <b-progress-bar :value="proposal.noVotes.length" variant="danger"></b-progress-bar>
+                    <b-progress
+                        height="3rem"
+                        :max="proposal.yesVotes.length+proposal.noVotes.length">
+                      <b-progress-bar
+                          class="progressBarText"
+                          show-progress
+                          :value="proposal.yesVotes.length"
+                          variant="success"></b-progress-bar>
+                      <b-progress-bar
+                          class="progressBarText"
+                          show-progress
+                          :value="proposal.noVotes.length"
+                          variant="danger"></b-progress-bar>
                     </b-progress>
                   </div>
                 </div>
@@ -85,6 +80,13 @@
               </div>
               <div>
               </div>
+              <div class="row">
+                <base-button
+                    v-b-toggle="proposalDetailsCollapseId(proposal)"
+                    class="btn btn-lg btn-simple mb-2 mt-2" style="color: white" block>
+                  Details
+                </base-button>
+              </div>
               <b-collapse :id="proposalDetailsCollapseId(proposal)" class="mt-2">
                 <vega-proposal-details :proposal="proposal">
 
@@ -101,7 +103,7 @@
 <script>
 import {FadeTransition} from 'vue2-transitions';
 import {mapState} from "vuex";
-import {guessProposalChangeType} from "@/util/proposal-util";
+import {guessProposalChangeType, proposalChangeTypes} from "@/util/proposal-util";
 import VegaProposalDetails from "@/components/Vega/VegaProposalDetails";
 
 export default {
@@ -123,6 +125,7 @@ export default {
   async mounted() {
     try {
       const response = await this.services.vegaGovernance.listProposals();
+      console.log(JSON.stringify(response));
       this.proposals = response.data.proposals;
     } catch (e) {
       this.$notifyMessage("danger", "Cannot load, check settings");
@@ -140,6 +143,14 @@ export default {
     },
     proposalTitle(proposal) {
       return guessProposalChangeType(proposal);
+    },
+    proposalSubtitleTitle(proposal) {
+      const proposalType = guessProposalChangeType(proposal);
+      if(proposalType === proposalChangeTypes.NewMarket && proposal.terms.change.hasOwnProperty('instrument')){
+        return proposal.terms.change.instrument.code;
+      }else {
+        return null;
+      }
     },
     formatDate(iso8601Date) {
       const date = new Date(Date.parse(iso8601Date));

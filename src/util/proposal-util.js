@@ -9,7 +9,7 @@ const proposalChangeTypes = {
 function guessProposalChangeType(proposal){
     const change = proposal.terms.change;
     if(change.hasOwnProperty('instrument')){
-        return  proposalChangeTypes.NewMarket;
+        return proposalChangeTypes.NewMarket;
     }else if(change.hasOwnProperty('marketId')){
         return proposalChangeTypes.UpdateMarket;
     }else if(change.hasOwnProperty('networkParameter')){

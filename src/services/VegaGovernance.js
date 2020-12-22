@@ -60,7 +60,6 @@ export default class VegaGovernance {
                 },
                 type: type,
             };
-            console.log(requestPayload);
             return await axios.post(
                 this.endpointSubmitTransaction,
                 requestPayload,
