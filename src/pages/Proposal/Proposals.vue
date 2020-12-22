@@ -3,17 +3,15 @@
     <fade-transition :duration="100" mode="out-in">
       <!-- your content here -->
       <div>
-        <card>
-          <h5 slot="header" class="title">Proposals</h5>
           <div v-for="proposal in proposals" :key="proposal.id">
             <card type="user">
               <p class="card-text">
               </p>
               <div class="author">
-                <div class="block block-one"></div>
+                <!--div class="block block-one"></div>
                 <div class="block block-two"></div>
                 <div class="block block-three"></div>
-                <div class="block block-four"></div>
+                <div class="block block-four"></div-->
 
                 <div class="row">
                   <div class="col-md-12">
@@ -94,7 +92,6 @@
               </b-collapse>
             </card>
           </div>
-        </card>
       </div>
       <router-view></router-view>
     </fade-transition>
