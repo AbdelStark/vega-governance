@@ -2,6 +2,8 @@
 
 [Web App To Visualise And Manage Vega Governance Proposals](https://gitcoin.co/issue/vegaprotocol/bounties/2/100024492)
 
+[![hackathon](https://img.youtube.com/vi/NnU_0RTbolU/0.jpg)](https://www.youtube.com/watch?v=NnU_0RTbolU)
+
 ## Online Demo
 
 [Try it here!](https://vegagov-v3.surge.sh/)
