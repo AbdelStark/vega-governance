@@ -6,7 +6,7 @@
 
 [Try it here!](https://vegagov-v3.surge.sh/)
 
-See https://docs.testnet.vega.xyz/api/graphql/ for more information about integration.
+The web app uses Vega GraphQL API. Seee https://docs.testnet.vega.xyz/api/graphql/ for more information about integration.
 
 ### Front-End web application
 
