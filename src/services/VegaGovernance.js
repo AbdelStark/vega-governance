@@ -1,5 +1,8 @@
 const fetch = require('node-fetch');
+const axios = require('axios');
 import {query} from "./query";
+
+
 export default class VegaGovernance {
 
     /**
@@ -7,11 +10,32 @@ export default class VegaGovernance {
      * @param endpoint {String} Root URL.
      */
     constructor(endpoint) {
-        this.endpoint = endpoint;
+        this.endpointRest = endpoint;
+        this.endpointGraphQL = `${this.endpointRest}/query`;
+        this.endpointGetTime = `${this.endpointRest}/time`;
+        this.endpointPrepareVote = `${this.endpointRest}/governance/prepare/vote`;
+        this.endpointSubmitTransaction = `${this.endpointRest}/transaction`;
+    }
+
+    async getTime() {
+        return await axios.get(this.endpointGetTime);
+    }
+
+    async prepareVote(proposalID, partyID, timestamp, voteValue) {
+        return await axios.post(
+            this.endpointPrepareVote, {
+                vote: {
+                    partyID: partyID,
+                    proposalID: proposalID,
+                    timestamp: timestamp,
+                    value: voteValue,
+                }
+            }
+        );
     }
 
     async listProposals() {
-        const data = fetch(this.endpoint, {
+        const data = fetch(this.endpointGraphQL, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -23,8 +47,30 @@ export default class VegaGovernance {
         return await data;
     }
 
+    async submitTransaction(tx, type = "TYPE_COMMIT"){
+        try {
+            const requestPayload = {
+                tx: {
+                    tx: tx.tx,
+                    sig: {
+                        sig: tx.sig.sig,
+                        algo: tx.sig.algo,
+                        version: `${tx.sig.version}`,
+                    }
+                },
+                type: type,
+            };
+            return await axios.post(
+                this.endpointSubmitTransaction,
+                requestPayload,
+            );
+        }catch (error){
+            console.error(error);
+        }
+    }
+
     async listProposalsByParty(id) {
-        const data = fetch(this.endpoint, {
+        const data = fetch(this.endpointGraphQL, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

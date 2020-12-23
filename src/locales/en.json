@@ -4,6 +4,8 @@
   "sidebar": {
     "title": "Vega",
     "dashboard": "Dashboard",
-    "proposals": "Proposals"
+    "proposals": "Proposals",
+    "wallet": "Wallet",
+    "debug": "Debug"
   }
 }

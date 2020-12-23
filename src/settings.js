@@ -4,7 +4,9 @@ function buildSettings() {
     if (localStorage.getItem('settings')) {
         return settingsFromLocalStorage();
     }
-    return defaultSettings();
+    const settings = defaultSettings();
+    localStorage.setItem("settings", JSON.stringify(settings));
+    return settings;
 }
 
 function settingsFromLocalStorage() {
@@ -18,18 +20,31 @@ function settingsFromLocalStorage() {
     }
 }
 
+function updateSettingsOnLocalStorage(updater) {
+    console.log('updating settings on local storage');
+    try {
+        const settings = JSON.parse(localStorage.getItem('settings'));
+
+        updater(settings);
+        localStorage.setItem("settings", JSON.stringify(settings));
+    } catch (e) {
+        console.error(e);
+    }
+}
+
 function defaultSettings() {
     console.log('loading default application settings');
     return {
         vega: {
             wallet: {
-                endpoint: 'http://127.0.0.1:1789',
+                endpoint: 'https://wallet.testnet.vega.xyz',
             },
             governance: {
-                endpoint: 'https://lb.testnet.vega.xyz/query',
+                endpoint: 'https://lb.testnet.vega.xyz',
             }
         }
     };
 }
 
 export default settings;
+export {settingsFromLocalStorage, updateSettingsOnLocalStorage}

@@ -25,7 +25,7 @@ import BlackDashboard from "./plugins/blackDashboard";
 import i18n from "./i18n";
 import './registerServiceWorker';
 import settings from "@/settings";
-import services from "@/service-factory";
+import services, {buildServices, buildServicesFromSettings} from "@/service-factory";
 import {
     check as checkNotifications,
     registerServiceWorker as registerNotificationsServiceWorker,
@@ -43,7 +43,11 @@ const store = new Vuex.Store({
         settings: settings,
         services: services,
     },
-    mutations: {}
+    mutations: {
+        updateServices(state, settings){
+            state.services = buildServicesFromSettings(settings);
+        }
+    }
 });
 
 /* eslint-disable no-new */

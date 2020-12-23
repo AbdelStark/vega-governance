@@ -3,28 +3,136 @@ query {
   proposals {
     id
     datetime
-    party { id }
+    party {
+      id
+    }
     reference
     state
-    terms { closingDatetime, enactmentDatetime}
-    yesVotes { value, party { id }, datetime}
-    noVotes { value, party { id }, datetime}
+    terms {
+      closingDatetime
+      enactmentDatetime
+      change {
+        ... on NewMarket {
+          instrument {
+            code
+          }
+          decimalPlaces
+          tradingMode {
+            ... on ContinuousTrading {
+              tickSize
+            }
+            ... on DiscreteTrading {
+              tickSize
+              duration
+            }
+          }
+          riskParameters {
+            ... on LogNormalRiskModel {
+              tau
+              riskAversionParameter
+              params {
+                r
+                sigma
+                mu
+              }
+            }
+          }
+        }
+        ... on NewAsset {
+          source {
+            ... on BuiltinAsset {
+              id
+            }
+          }
+        }
+      }
+    }
+    yesVotes {
+      value
+      party {
+        id
+      }
+      datetime
+    }
+    noVotes {
+      value
+      party {
+        id
+      }
+      datetime
+    }
   }
 }
 `;
 
 const listProposalsByParty = `
+
 query Party($id: String!){
   party(id: $id) {
-    proposals {
+   query {
+  proposals {
+    id
+    datetime
+    party {
       id
-      datetime
-      reference
-      state
-      terms { closingDatetime, enactmentDatetime}
-      yesVotes { value, party { id }, datetime}
-      noVotes { value, party { id }, datetime}
     }
+    reference
+    state
+    terms {
+      closingDatetime
+      enactmentDatetime
+      change {
+        ... on NewMarket {
+          instrument {
+            code
+          }
+          decimalPlaces
+          tradingMode {
+            ... on ContinuousTrading {
+              tickSize
+            }
+            ... on DiscreteTrading {
+              tickSize
+              duration
+            }
+          }
+          riskParameters {
+            ... on LogNormalRiskModel {
+              tau
+              riskAversionParameter
+              params {
+                r
+                sigma
+                mu
+              }
+            }
+          }
+        }
+        ... on NewAsset {
+          source {
+            ... on BuiltinAsset {
+              id
+            }
+          }
+        }
+      }
+    }
+    yesVotes {
+      value
+      party {
+        id
+      }
+      datetime
+    }
+    noVotes {
+      value
+      party {
+        id
+      }
+      datetime
+    }
+  }
+}
   }
 }
 `;
