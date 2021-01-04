@@ -30,6 +30,9 @@
           <div v-else>
             <card>
               <div class="row">
+                <div class="col-md-12 mt-2">
+                  <base-button block class="btn-danger" @click="logout">Logout</base-button>
+                </div>
                 <div class="col-md-6 mt-2">
                   <label>Metadata</label>
                   <b-form-tags input-id="tags" v-model="keyPairPairData.metadata"></b-form-tags>
@@ -104,6 +107,13 @@ export default {
     await this.loadAuthenticatedData();
   },
   methods: {
+    async logout (){
+      const isSuccess = await this.services.vegaWallet.logout();
+      if(isSuccess){
+        localStorage.removeItem("vega-token");
+        this.$router.push("/");
+      }
+    },
     async loadAuthenticatedData() {
       if (this.isLogged) {
         this.addresses = await this.services.vegaWallet.listKeys();

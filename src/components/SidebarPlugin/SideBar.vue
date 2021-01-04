@@ -10,7 +10,8 @@
       <div class="logo">
         <a aria-label="sidebar mini logo"
            class="simple-text logo-mini"
-           href="#">
+           @click="about"
+        >
           <div class="photo">
             <img
               alt=""
@@ -109,6 +110,9 @@ export default {
     };
   },
   methods: {
+    about(){
+      this.$router.push("/about");
+    },
     findActiveLink() {
       this.links.forEach((link, index) => {
         if (link.isActive()) {
