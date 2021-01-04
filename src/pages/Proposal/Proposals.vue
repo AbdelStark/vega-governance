@@ -15,7 +15,7 @@
 
                 <div class="row">
                   <div class="col-md-12">
-                    <h4 class="vegaTitle">{{ proposalTitle(proposal) }}</h4>
+                    <h1 style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">{{ proposalTitle(proposal) }}</h1>
                     <h4 class="vegaLabel" v-if="proposalSubtitleTitle(proposal) !== null">{{ proposalSubtitleTitle(proposal) }}</h4>
                   </div>
                 </div>
@@ -28,7 +28,7 @@
                 <div class="row">
                   <div class="col-md-12 pr-md-1">
                     <h4 class="vegaTitle">STATUS</h4>
-                    <h4 class="vegaLabel">{{ proposal.state }}</h4>
+                    <h2 style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">{{ proposal.state }}</h2>
                   </div>
                 </div>
                 <div class="row">

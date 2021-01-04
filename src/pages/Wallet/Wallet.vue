@@ -8,6 +8,11 @@
           <card v-if="!isLogged">
             <h5 slot="header" class="title">Login</h5>
             <div class="row">
+              <div class="col-md-12">
+                <a href="#" @click="goToSettings">{{settings.vega.wallet.endpoint}}</a>
+              </div>
+            </div>
+            <div class="row">
               <div class="col-md-6 mt-2">
                 <label>
                   <i class="tim-icons icon-link-72 mr-2"></i>
@@ -107,6 +112,9 @@ export default {
     await this.loadAuthenticatedData();
   },
   methods: {
+    goToSettings (){
+      this.$router.push('settings');
+    },
     async logout (){
       const isSuccess = await this.services.vegaWallet.logout();
       if(isSuccess){
@@ -120,11 +128,16 @@ export default {
       }
     },
     async login() {
-      const isSuccess = await this.services.vegaWallet.login(this.loginData.walletId, this.loginData.passphrase);
-      if (isSuccess) {
-        localStorage.setItem("vega-token", this.services.vegaWallet.token);
-        await this.loadAuthenticatedData();
+      try {
+        const isSuccess = await this.services.vegaWallet.login(this.loginData.walletId, this.loginData.passphrase);
+        if (isSuccess) {
+          localStorage.setItem("vega-token", this.services.vegaWallet.token);
+          await this.loadAuthenticatedData();
+        }
+      }catch (e){
+        this.$notifyMessage('danger', 'Invalid login/password');
       }
+
     },
     async generateKeyPair() {
       try {
