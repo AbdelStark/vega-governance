@@ -3,97 +3,113 @@
     <fade-transition :duration="100" mode="out-in">
       <!-- your content here -->
       <div>
-          <div v-for="proposal in proposals" :key="proposal.id">
-            <card type="user">
-              <p class="card-text">
-              </p>
-              <div class="author">
-                <!--div class="block block-one"></div>
-                <div class="block block-two"></div>
-                <div class="block block-three"></div>
-                <div class="block block-four"></div-->
-
-                <div class="row">
-                  <div class="col-md-12">
-                    <h1 style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">{{ proposalTitle(proposal) }}</h1>
-                    <h4 class="vegaLabel" v-if="proposalSubtitleTitle(proposal) !== null">{{ proposalSubtitleTitle(proposal) }}</h4>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-12">
-                    <h4 class="vegaTitle">DEADLINE</h4>
-                    <h4 class="vegaLabel">{{ formatDate(proposal.datetime) }}</h4>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-12 pr-md-1">
-                    <h4 class="vegaTitle">STATUS</h4>
-                    <h2 style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">{{ proposal.state }}</h2>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-12 pr-md-1">
-                    <h4 class="vegaTitle">VOTES FOR / AGAINST</h4>
-                    <h4 class="vegaLabel">{{ proposal.yesVotes.length }}  / {{ proposal.noVotes.length }}</h4>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-12">
-                    <b-progress
-                        height="3rem"
-                        :max="proposal.yesVotes.length+proposal.noVotes.length">
-                      <b-progress-bar
-                          class="progressBarText"
-                          show-progress
-                          :value="proposal.yesVotes.length"
-                          variant="success"></b-progress-bar>
-                      <b-progress-bar
-                          class="progressBarText"
-                          show-progress
-                          :value="proposal.noVotes.length"
-                          variant="danger"></b-progress-bar>
-                    </b-progress>
-                  </div>
-                </div>
-
-
-                <div class="row">
-                  <table class="mt-2" style="text-align: center">
-                    <tr>
-                      <td>
-                        <font-awesome-icon @click="onVoteYes(proposal)"
-                                           style="color: #00f2c3; display: inline-block; width: 100%;"
-                                           class="fa-3x"
-                                           icon="thumbs-up"></font-awesome-icon>
-                      </td>
-                      <td>
-                        <font-awesome-icon @click="onVoteNo(proposal)"
-                                           style="color: #fd5d93; display: inline-block; width: 100%;"
-                                           class="fa-3x"
-                                           icon="thumbs-down"></font-awesome-icon>
-                      </td>
-                    </tr>
-                  </table>
-                </div>
-              </div>
-              <div>
-              </div>
-
-              <b-collapse :id="proposalDetailsCollapseId(proposal)" class="mt-2">
-                <vega-proposal-details :proposal="proposal">
-                </vega-proposal-details>
-              </b-collapse>
+        <div v-for="proposal in proposals" :key="proposal.id">
+          <card type="user">
+            <p class="card-text">
+            </p>
+            <div class="author">
+              <!--div class="block block-one"></div>
+              <div class="block block-two"></div>
+              <div class="block block-three"></div>
+              <div class="block block-four"></div-->
 
               <div class="row">
-                <base-button
-                    v-b-toggle="proposalDetailsCollapseId(proposal)"
-                    @click="toggleDetailsText"
-                    class="btn btn-lg btn-simple mb-2 mt-2" style="color: white" block>
-                  {{detailsText}}
-                </base-button>
+                <div class="col-md-12">
+                  <h1 style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">{{
+                      proposalTitle(proposal)
+                    }}</h1>
+                  <h4 class="vegaLabel" v-if="proposalSubtitleTitle(proposal) !== null">
+                    {{ proposalSubtitleTitle(proposal) }}</h4>
+                </div>
               </div>
-            </card>
-          </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <h4 class="vegaTitle">DEADLINE</h4>
+                  <h4 class="vegaLabel">{{ formatDate(proposal.datetime) }}</h4>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12 pr-md-1">
+                  <h4 class="vegaTitle">STATUS</h4>
+                  <h2 style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">{{ proposal.state }}</h2>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12 pr-md-1">
+                  <h4 class="vegaTitle">VOTES FOR / AGAINST</h4>
+                  <h4 class="vegaLabel">{{ proposal.yesVotes.length }} / {{ proposal.noVotes.length }}</h4>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <b-progress
+                      height="3rem"
+                      :max="proposal.yesVotes.length+proposal.noVotes.length">
+                    <b-progress-bar
+                        class="progressBarText"
+                        show-progress
+                        :value="proposal.yesVotes.length"
+                        variant="success"></b-progress-bar>
+                    <b-progress-bar
+                        class="progressBarText"
+                        show-progress
+                        :value="proposal.noVotes.length"
+                        variant="danger"></b-progress-bar>
+                  </b-progress>
+                </div>
+              </div>
+
+              <div class="row mt-4">
+                <div class="col-md-6">
+                  <font-awesome-icon @click="onVoteYes(proposal)"
+                                     style="color: #00f2c3; display: inline-block; width: 100%;"
+                                     class="fa-2x"
+                                     icon="thumbs-up"></font-awesome-icon>
+                </div>
+                <div class="col-md-6">
+                  <font-awesome-icon @click="onVoteNo(proposal)"
+                                     style="color: #fd5d93; display: inline-block; width: 100%;"
+                                     class="fa-2x"
+                                     icon="thumbs-down"></font-awesome-icon>
+                </div>
+              </div>
+              <!--div class="row">
+                <table class="mt-2" style="text-align: center">
+                  <tr>
+                    <td>
+                      <font-awesome-icon @click="onVoteYes(proposal)"
+                                         style="color: #00f2c3; display: inline-block; width: 100%;"
+                                         class="fa-3x"
+                                         icon="thumbs-up"></font-awesome-icon>
+                    </td>
+                    <td>
+                      <font-awesome-icon @click="onVoteNo(proposal)"
+                                         style="color: #fd5d93; display: inline-block; width: 100%;"
+                                         class="fa-3x"
+                                         icon="thumbs-down"></font-awesome-icon>
+                    </td>
+                  </tr>
+                </table>
+              </div-->
+            </div>
+            <div>
+            </div>
+
+            <b-collapse :id="proposalDetailsCollapseId(proposal)" class="mt-2">
+              <vega-proposal-details :proposal="proposal">
+              </vega-proposal-details>
+            </b-collapse>
+
+            <div class="row">
+              <base-button
+                  v-b-toggle="proposalDetailsCollapseId(proposal)"
+                  @click="toggleDetailsText"
+                  class="btn btn-lg btn-simple mb-2 mt-2" style="color: white" block>
+                {{ detailsText }}
+              </base-button>
+            </div>
+          </card>
+        </div>
       </div>
       <router-view></router-view>
     </fade-transition>
@@ -131,10 +147,10 @@ export default {
     }
   },
   methods: {
-    toggleDetailsText(){
-      if(this.detailsText === 'Show details'){
+    toggleDetailsText() {
+      if (this.detailsText === 'Show details') {
         this.detailsText = 'Hide details';
-      }else{
+      } else {
         this.detailsText = 'Show details';
       }
     },
@@ -152,9 +168,9 @@ export default {
     },
     proposalSubtitleTitle(proposal) {
       const proposalType = guessProposalChangeType(proposal);
-      if(proposalType === proposalChangeTypes.NewMarket && proposal.terms.change.hasOwnProperty('instrument')){
+      if (proposalType === proposalChangeTypes.NewMarket && proposal.terms.change.hasOwnProperty('instrument')) {
         return proposal.terms.change.instrument.code;
-      }else {
+      } else {
         return null;
       }
     },
