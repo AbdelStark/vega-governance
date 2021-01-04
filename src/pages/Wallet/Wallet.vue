@@ -8,6 +8,11 @@
           <card v-if="!isLogged">
             <h5 slot="header" class="title">Login</h5>
             <div class="row">
+              <div class="col-md-12">
+                <a href="#" @click="goToSettings">{{settings.vega.wallet.endpoint}}</a>
+              </div>
+            </div>
+            <div class="row">
               <div class="col-md-6 mt-2">
                 <label>
                   <i class="tim-icons icon-link-72 mr-2"></i>
@@ -30,6 +35,9 @@
           <div v-else>
             <card>
               <div class="row">
+                <div class="col-md-12 mt-2">
+                  <base-button block class="btn-danger" @click="logout">Logout</base-button>
+                </div>
                 <div class="col-md-6 mt-2">
                   <label>Metadata</label>
                   <b-form-tags input-id="tags" v-model="keyPairPairData.metadata"></b-form-tags>
@@ -104,17 +112,32 @@ export default {
     await this.loadAuthenticatedData();
   },
   methods: {
+    goToSettings (){
+      this.$router.push('settings');
+    },
+    async logout (){
+      const isSuccess = await this.services.vegaWallet.logout();
+      if(isSuccess){
+        localStorage.removeItem("vega-token");
+        this.$router.push("/");
+      }
+    },
     async loadAuthenticatedData() {
       if (this.isLogged) {
         this.addresses = await this.services.vegaWallet.listKeys();
       }
     },
     async login() {
-      const isSuccess = await this.services.vegaWallet.login(this.loginData.walletId, this.loginData.passphrase);
-      if (isSuccess) {
-        localStorage.setItem("vega-token", this.services.vegaWallet.token);
-        await this.loadAuthenticatedData();
+      try {
+        const isSuccess = await this.services.vegaWallet.login(this.loginData.walletId, this.loginData.passphrase);
+        if (isSuccess) {
+          localStorage.setItem("vega-token", this.services.vegaWallet.token);
+          await this.loadAuthenticatedData();
+        }
+      }catch (e){
+        this.$notifyMessage('danger', 'Invalid login/password');
       }
+
     },
     async generateKeyPair() {
       try {

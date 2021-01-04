@@ -24,16 +24,13 @@
         <span class="navbar-toggler-bar navbar-kebab"></span>
       </button>
 
-      <collapse-transition>
+      <!--collapse-transition>
         <div v-show="showMenu" class="collapse navbar-collapse show">
           <ul :class="$rtl.isRTL ? 'mr-auto' : 'ml-auto'" class="navbar-nav">
             <div class="search-bar input-group" @click="searchModalVisible = true">
-              <!-- <input type="text" class="form-control" placeholder="Search...">
-              <div class="input-group-addon"><i class="tim-icons icon-zoom-split"></i></div> -->
               <button id="search-button" class="btn btn-link" data-target="#searchModal" data-toggle="modal">
                 <i class="tim-icons icon-zoom-split"></i>
               </button>
-              <!-- You can choose types of search input -->
             </div>
             <modal id="searchModal"
                    :centered="false"
@@ -71,27 +68,8 @@
               </li>
             </base-dropdown>
           </ul>
-          <b-modal id="modal-settings" title="Settings" hide-footer>
-            <div class="row">
-              <div class="col-md-12 mt-2">
-                <label>Wallet URL </label>
-                <input class="form-control" style="color: black" v-model="walletUrl"></input>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-12 mt-2">
-                <label>Governance URL </label>
-                <input class="form-control" style="color: black" v-model="governanceUrl"></input>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-12 mt-2">
-                <base-button block @click="validate">Validate</base-button>
-              </div>
-            </div>
-          </b-modal>
         </div>
-      </collapse-transition>
+      </collapse-transition-->
     </div>
   </nav>
 </template>

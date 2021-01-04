@@ -5,6 +5,7 @@ import Proposals from "@/pages/Proposal/Proposals";
 import Debug from "@/pages/Debug/Debug";
 import Wallet from "@/pages/Wallet/Wallet";
 import Settings from "@/pages/Settings/Settings";
+import About from "@/pages/Wallet/About";
 
 const routes = [
   {
@@ -27,6 +28,11 @@ const routes = [
         path: 'settings',
         name: 'settings',
         components: {default: Settings}
+      },
+      {
+        path: 'about',
+        name: 'about',
+        components: {default: About}
       },
       {
         path: 'debug',

@@ -4,7 +4,8 @@
       <template slot="links">
         <sidebar-link :name="$t('sidebar.proposals')" icon="tim-icons icon-chart-pie-36" to="/proposals"/>
         <sidebar-link :name="$t('sidebar.wallet')" icon="tim-icons icon-key-25" to="/wallet"/>
-        <!--sidebar-link :name="$t('sidebar.debug')" icon="tim-icons icon-controller" to="/debug"/-->
+        <sidebar-link :name="$t('sidebar.settings')" icon="tim-icons icon-settings" to="/settings"/>
+        <sidebar-link name="About" icon="tim-icons icon-alert-circle-exc" to="/about"/>
       </template>
     </side-bar>
     <div class="main-panel">
