@@ -78,18 +78,20 @@
               </div>
               <div>
               </div>
+
+              <b-collapse :id="proposalDetailsCollapseId(proposal)" class="mt-2">
+                <vega-proposal-details :proposal="proposal">
+                </vega-proposal-details>
+              </b-collapse>
+
               <div class="row">
                 <base-button
                     v-b-toggle="proposalDetailsCollapseId(proposal)"
+                    @click="toggleDetailsText"
                     class="btn btn-lg btn-simple mb-2 mt-2" style="color: white" block>
-                  Details
+                  {{detailsText}}
                 </base-button>
               </div>
-              <b-collapse :id="proposalDetailsCollapseId(proposal)" class="mt-2">
-                <vega-proposal-details :proposal="proposal">
-
-                </vega-proposal-details>
-              </b-collapse>
             </card>
           </div>
       </div>
@@ -111,6 +113,7 @@ export default {
   data() {
     return {
       proposals: [],
+      detailsText: 'Show details',
     }
   },
   computed: {
@@ -128,6 +131,13 @@ export default {
     }
   },
   methods: {
+    toggleDetailsText(){
+      if(this.detailsText === 'Show details'){
+        this.detailsText = 'Hide details';
+      }else{
+        this.detailsText = 'Show details';
+      }
+    },
     onVoteYes(proposal) {
       console.log('user voted YES for proposal: ', proposal.id);
     },
