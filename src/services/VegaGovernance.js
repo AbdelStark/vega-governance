@@ -15,6 +15,7 @@ export default class VegaGovernance {
         this.endpointGetTime = `${this.endpointRest}/time`;
         this.endpointPrepareVote = `${this.endpointRest}/governance/prepare/vote`;
         this.endpointSubmitTransaction = `${this.endpointRest}/transaction`;
+        this.endpointListAssets = `${this.endpointRest}/assets`;
     }
 
     async getTime() {
@@ -83,6 +84,14 @@ export default class VegaGovernance {
         })
             .then(r => r.json());
         return await data;
+    }
+
+    async listAssets(){
+        return await axios.get(this.endpointListAssets);
+    }
+
+    async listAccounts(pubKey){
+        return await axios.get(`${this.endpointRest}/parties/${pubKey}/accounts`);
     }
 }
 

@@ -41,7 +41,7 @@ function defaultSettings() {
             },
             governance: {
                 endpoint: 'https://lb.testnet.vega.xyz',
-            }
+            },
         }
     };
 }

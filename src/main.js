@@ -25,7 +25,7 @@ import BlackDashboard from "./plugins/blackDashboard";
 import i18n from "./i18n";
 import './registerServiceWorker';
 import settings from "@/settings";
-import services, {buildServices, buildServicesFromSettings} from "@/service-factory";
+import services, {buildServicesFromSettings} from "@/service-factory";
 import {
     check as checkNotifications,
     registerServiceWorker as registerNotificationsServiceWorker,
@@ -44,7 +44,7 @@ const store = new Vuex.Store({
         services: services,
     },
     mutations: {
-        updateServices(state, settings){
+        updateServices(state, settings) {
             state.services = buildServicesFromSettings(settings);
         }
     }
@@ -62,3 +62,12 @@ checkNotifications();
 registerNotificationsServiceWorker(settings).then(registration => services.notification = registration);
 requestNotificationPermission().then(console.log);
 
+services.vegaGovernance.listAssets().then(assetsResponse => {
+    const assets = assetsResponse.data.assets;
+    assets.forEach(asset => {
+        if (asset.symbol === 'tVOTE') {
+            localStorage.setItem("tVoteAssetId", asset.ID);
+        }
+    });
+
+})

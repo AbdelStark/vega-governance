@@ -154,11 +154,34 @@ export default {
         this.detailsText = 'Show details';
       }
     },
-    onVoteYes(proposal) {
-      console.log('user voted YES for proposal: ', proposal.id);
+    async onVoteYes(proposal) {
+      if(localStorage.getItem('selectedVoteKey') === null){
+        this.$notifyMessage('danger', 'No tVote key selected.');
+      }else {
+        console.log('user voted YES for proposal: ', proposal.id);
+        const time = await this.services.vegaGovernance.getTime();
+        const voteValue = 'VALUE_YES';
+        const prepareVoteResult = await this.services.vegaGovernance.prepareVote(
+            proposal.id,
+            proposal.party.id,
+            time.timestamp,
+            voteValue
+        );
+        const blob = prepareVoteResult.data.blob;
+        const response = await this.services.vegaWallet.signTransaction(
+            blob,
+            localStorage.getItem('selectedVoteKey'),
+            true
+        );
+        console.log(response);
+      }
     },
-    onVoteNo(proposal) {
-      console.log('user voted NO for proposal: ', proposal.id);
+    async onVoteNo(proposal) {
+      if(localStorage.getItem('selectedVoteKey') === null){
+        this.$notifyMessage('danger', 'No tVote key selected.');
+      }else {
+        console.log('user voted NO for proposal: ', proposal.id);
+      }
     },
     proposalDetailsCollapseId(proposal) {
       return 'collapse-proposal-details-' + proposal.id;
