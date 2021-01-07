@@ -59,7 +59,7 @@
                 </div>
               </div>
 
-              <div class="row mt-2" >
+              <div class="row mt-2" v-if="showVotePanel(proposal)">
                 <div class="col-md-12">
                   <b-button-group>
                     <base-button :loading="voteLoading" class="btn-success" size="lg" @click="onVoteYes(proposal)">
@@ -128,6 +128,9 @@ export default {
     }
   },
   methods: {
+    showVotePanel(proposal){
+      return proposal.state !== 'Declined' && proposal.state !== 'Rejected';
+    },
     toggleDetailsText() {
       if (this.detailsText === 'Show details') {
         this.detailsText = 'Hide details';
