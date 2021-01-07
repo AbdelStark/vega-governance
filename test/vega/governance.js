@@ -24,12 +24,13 @@ describe('Vega Governance', function () {
                 timestamp,
                 voteValue
             );
-            //console.log(prepareVoteResult);
+            console.log(prepareVoteResult);
             const blob = prepareVoteResult.data.blob;
             await vegaWallet.login(walletID, passphrase);
             const keys = await vegaWallet.listKeys();
+            //console.log(keys);
             const signingKey = keys[0].pub;
-            console.log(signingKey);
+            //console.log(signingKey);
             /*const signed = await vegaWallet.signTransaction(blob, signingKey, true);
             //console.log(signed);
             const tx = signed.signedTx;

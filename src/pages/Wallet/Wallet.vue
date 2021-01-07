@@ -9,7 +9,7 @@
             <h5 slot="header" class="title">Login</h5>
             <div class="row">
               <div class="col-md-12">
-                <a href="#" @click="goToSettings">{{settings.vega.wallet.endpoint}}</a>
+                <a href="#" @click="goToSettings">{{ settings.vega.wallet.endpoint }}</a>
               </div>
             </div>
             <div class="row">
@@ -55,21 +55,19 @@
               </div>
             </card>
             <card>
-              <div class="row" v-for="address in addresses" :key="address.pub">
-                <div class="col-md-12 mt-2">
-                  {{ address.pub }}
-                  <label class="ml-2">
-                    <i class="tim-icons icon-key-25 mr-2"></i>
-                    Algo : {{ address.algo }}
+              <b-form-group label="Eligible voting keys" v-slot="{ ariaDescribedby }"
+                            style="color: white;font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: large;font-weight: bold;">
+                <b-form-radio
+                    v-for="key in tVoteKeys" :key="key.pub"
+                    size="lg"
+                    v-on:change="keySelectedEvent"
+                    v-model="selectedVoteKey" :aria-describedby="ariaDescribedby"  :value="key.pub">
+                  <label style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: large;font-weight: bold;">
+                    {{ subPubKey(key.pub) }} - {{key.balance}} tVote tokens
                   </label>
-                  <div v-for="metadata in address.meta" :key="metadata.key">
-                    <label>
-                      - {{ metadata.key }} = {{ metadata.value }}
-                    </label>
-                  </div>
-                  <hr class="rounded" style="border-color: white"/>
-                </div>
-              </div>
+
+                </b-form-radio>
+              </b-form-group>
             </card>
           </div>
         </div>
@@ -96,7 +94,9 @@ export default {
         metadata: [],
         passphrase: '73Jmbx4FGmNjQPd8Fn7t968GS9Fwnp'
       },
-      addresses: []
+      keys: [],
+      tVoteKeys: [],
+      selectedVoteKey: localStorage.getItem('selectedVoteKey'),
     }
   },
   computed: {
@@ -112,19 +112,41 @@ export default {
     await this.loadAuthenticatedData();
   },
   methods: {
-    goToSettings (){
+    keySelectedEvent(evt){
+      this.selectedVoteKey = evt;
+      localStorage.setItem('selectedVoteKey', evt);
+    },
+    goToSettings() {
       this.$router.push('settings');
     },
-    async logout (){
+    subPubKey(key) {
+      return key.substr(0, 4) + '...' + key.substr(key.length - 4)
+    },
+    async logout() {
       const isSuccess = await this.services.vegaWallet.logout();
-      if(isSuccess){
+      if (isSuccess) {
         localStorage.removeItem("vega-token");
         this.$router.push("/");
       }
     },
     async loadAuthenticatedData() {
       if (this.isLogged) {
-        this.addresses = await this.services.vegaWallet.listKeys();
+        this.keys = await this.services.vegaWallet.listKeys();
+        for (const key of this.keys) {
+          const accountsResponse = await this.services.vegaGovernance.listAccounts(key.pub);
+          if (Array.isArray(accountsResponse.data.accounts)) {
+            accountsResponse.data.accounts.forEach(account => {
+              if (account.asset === localStorage.getItem('tVoteAssetId') ) {
+                key.balance = account.balance;
+                this.tVoteKeys.push(key);
+                if (this.selectedVoteKey === null) {
+                  this.selectedVoteKey = key.pub;
+                  localStorage.setItem('selectedVoteKey', key.pub);
+                }
+              }
+            });
+          }
+        }
       }
     },
     async login() {
@@ -134,7 +156,7 @@ export default {
           localStorage.setItem("vega-token", this.services.vegaWallet.token);
           await this.loadAuthenticatedData();
         }
-      }catch (e){
+      } catch (e) {
         this.$notifyMessage('danger', 'Invalid login/password');
       }
 

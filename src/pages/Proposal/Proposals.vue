@@ -59,38 +59,18 @@
                 </div>
               </div>
 
-              <div class="row mt-4">
-                <div class="col-md-6">
-                  <font-awesome-icon @click="onVoteYes(proposal)"
-                                     style="color: #00f2c3; display: inline-block; width: 100%;"
-                                     class="fa-2x"
-                                     icon="thumbs-up"></font-awesome-icon>
-                </div>
-                <div class="col-md-6">
-                  <font-awesome-icon @click="onVoteNo(proposal)"
-                                     style="color: #fd5d93; display: inline-block; width: 100%;"
-                                     class="fa-2x"
-                                     icon="thumbs-down"></font-awesome-icon>
+              <div class="row mt-2" >
+                <div class="col-md-12">
+                  <b-button-group>
+                    <base-button :loading="voteLoading" class="btn-success" size="lg" @click="onVoteYes(proposal)">
+                      YES
+                    </base-button>
+                    <base-button :loading="voteLoading" class="btn-danger" size="lg" @click="onVoteNo(proposal)">
+                      NO
+                    </base-button>
+                  </b-button-group>
                 </div>
               </div>
-              <!--div class="row">
-                <table class="mt-2" style="text-align: center">
-                  <tr>
-                    <td>
-                      <font-awesome-icon @click="onVoteYes(proposal)"
-                                         style="color: #00f2c3; display: inline-block; width: 100%;"
-                                         class="fa-3x"
-                                         icon="thumbs-up"></font-awesome-icon>
-                    </td>
-                    <td>
-                      <font-awesome-icon @click="onVoteNo(proposal)"
-                                         style="color: #fd5d93; display: inline-block; width: 100%;"
-                                         class="fa-3x"
-                                         icon="thumbs-down"></font-awesome-icon>
-                    </td>
-                  </tr>
-                </table>
-              </div-->
             </div>
             <div>
             </div>
@@ -130,6 +110,7 @@ export default {
     return {
       proposals: [],
       detailsText: 'Show details',
+      voteLoading: false,
     }
   },
   computed: {
@@ -154,11 +135,42 @@ export default {
         this.detailsText = 'Show details';
       }
     },
-    onVoteYes(proposal) {
-      console.log('user voted YES for proposal: ', proposal.id);
+    async onVoteYes(proposal) {
+      await this.doVote(proposal, 'VALUE_YES' );
     },
-    onVoteNo(proposal) {
-      console.log('user voted NO for proposal: ', proposal.id);
+    async onVoteNo(proposal) {
+     await this.doVote(proposal, 'VALUE_NO' );
+    },
+    async doVote(proposal, voteValue){
+      try{
+        this.voteLoading = true;
+        if(localStorage.getItem('selectedVoteKey') === null){
+          this.$notifyMessage('danger', 'No tVote key selected.');
+        }else {
+          console.log(`user voted ${voteValue} for proposal: ${proposal.id}`);
+          const time = await this.services.vegaGovernance.getTime();
+          console.log('calling prepare vote');
+          const prepareVoteResult = await this.services.vegaGovernance.prepareVote(
+              proposal.id,
+              proposal.party.id,
+              time.timestamp,
+              voteValue
+          );
+          console.log('prepare vote response: ', prepareVoteResult);
+          const blob = prepareVoteResult.data.blob;
+          console.log('calling sign transaction');
+          const response = await this.services.vegaWallet.signTransaction(
+              blob,
+              localStorage.getItem('selectedVoteKey'),
+              true
+          );
+          console.log('sign transaction response: ', response);
+        }
+        this.voteLoading = false;
+      }catch (e) {
+        this.$notifyMessage('danger', 'Vote failed.');
+        this.voteLoading = false;
+      }
     },
     proposalDetailsCollapseId(proposal) {
       return 'collapse-proposal-details-' + proposal.id;
