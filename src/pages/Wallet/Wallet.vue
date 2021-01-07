@@ -63,8 +63,9 @@
                     v-on:change="keySelectedEvent"
                     v-model="selectedVoteKey" :aria-describedby="ariaDescribedby"  :value="key.pub">
                   <label style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: large;font-weight: bold;">
-                    {{ subPubKey(key.pub) }}
+                    {{ subPubKey(key.pub) }} - {{key.balance}} tVote tokens
                   </label>
+
                 </b-form-radio>
               </b-form-group>
             </card>
@@ -119,7 +120,7 @@ export default {
       this.$router.push('settings');
     },
     subPubKey(key) {
-      return key.substr(0, 6) + '...' + key.substr(key.length - 6)
+      return key.substr(0, 4) + '...' + key.substr(key.length - 4)
     },
     async logout() {
       const isSuccess = await this.services.vegaWallet.logout();
@@ -131,12 +132,12 @@ export default {
     async loadAuthenticatedData() {
       if (this.isLogged) {
         this.keys = await this.services.vegaWallet.listKeys();
-        console.log(localStorage.getItem('tVoteAssetId'));
         for (const key of this.keys) {
           const accountsResponse = await this.services.vegaGovernance.listAccounts(key.pub);
           if (Array.isArray(accountsResponse.data.accounts)) {
             accountsResponse.data.accounts.forEach(account => {
-              if (account.asset === localStorage.getItem('tVoteAssetId')) {
+              if (account.asset === localStorage.getItem('tVoteAssetId') ) {
+                key.balance = account.balance;
                 this.tVoteKeys.push(key);
                 if (this.selectedVoteKey === null) {
                   this.selectedVoteKey = key.pub;
