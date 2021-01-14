@@ -49,22 +49,22 @@
                 <div class="col-md-12">
                   <b-progress
                       height="3rem"
-                      :max="voteResultProgressMax(proposal)">
+                      :max="proposal.voteResultProgressMax">
                     <b-progress-bar
                         class="progressBarText"
                         show-progress
-                        :value="voteResultProgressYes(proposal)"
+                        :value="proposal.voteResultProgressYes"
                         variant="success"></b-progress-bar>
                     <b-progress-bar
                         class="progressBarText"
                         show-progress
-                        :value="voteResultProgressNo(proposal)"
+                        :value="proposal.voteResultProgressNo"
                         variant="danger"></b-progress-bar>
                   </b-progress>
                 </div>
               </div>
 
-              <div class="row mt-2" >
+              <div class="row mt-2">
                 <div class="col-md-12">
                   <b-button-group>
                     <base-button :loading="voteLoading" class="btn-success" size="lg" @click="onVoteYes(proposal)">
@@ -129,17 +129,17 @@ export default {
     await this.refreshProposals();
   },
   methods: {
-    voteResultProgressMax(proposal){
-      return proposal.yesVotes.length+proposal.noVotes.length;
+    voteResultProgressMax(proposal) {
+      return proposal.yesVotes.length + proposal.noVotes.length;
     },
-    voteResultProgressYes(proposal){
+    voteResultProgressYes(proposal) {
       return proposal.yesVotes.length;
     },
-    voteResultProgressNo(proposal){
+    voteResultProgressNo(proposal) {
       return proposal.noVotes.length;
     },
-    async onActiveOnlyChange(activeOnly){
-      if(activeOnly) {
+    async onActiveOnlyChange(activeOnly) {
+      if (activeOnly) {
         const filteredProposals = [];
         this.proposals.forEach(proposal => {
           if (proposal.state === 'Open') {
@@ -147,16 +147,41 @@ export default {
           }
         });
         this.proposals = filteredProposals;
-      }else{
+      } else {
         await this.refreshProposals();
       }
     },
-    async refreshProposals(){
+    async refreshProposals() {
       try {
+        this.proposals = [];
         const response = await this.services.vegaGovernance.listProposals();
-        this.proposals = response.data.proposals;
+        const proposals = response.data.proposals;
+        for(const proposal of proposals){
+          let weightingsAllVotes = 0;
+          let weightingsVoteFor = 0;
+          let weightingsVoteAgainst = 0;
+          for(const yesVote of proposal.yesVotes){
+            const balance = await this.services.vegaGovernance.getTVoteBalance(yesVote.party.id);
+            weightingsAllVotes+=balance;
+            weightingsVoteFor+=balance;
+          }
+          for(const noVote of proposal.noVotes){
+            const balance = await this.services.vegaGovernance.getTVoteBalance(noVote.party.id);
+            weightingsAllVotes+=balance;
+            weightingsVoteAgainst+=balance;
+          }
+          console.log(weightingsAllVotes, weightingsVoteFor, weightingsVoteAgainst);
+          proposal.voteResultProgressMax =  weightingsAllVotes;
+          proposal.voteResultProgressYes = weightingsVoteFor;
+          proposal.voteResultProgressNo = weightingsVoteAgainst;
+          /*proposal.voteResultProgressMax =  proposal.yesVotes.length + proposal.noVotes.length;
+          proposal.voteResultProgressYes = proposal.yesVotes.length;
+          proposal.voteResultProgressNo = proposal.noVotes.length;*/
+          this.proposals.push(proposal);
+        }
       } catch (e) {
         this.$notifyMessage("danger", "Cannot load, check settings");
+        console.error(e);
       }
     },
     toggleDetailsText() {
@@ -167,17 +192,17 @@ export default {
       }
     },
     async onVoteYes(proposal) {
-      await this.doVote(proposal, 'VALUE_YES' );
+      await this.doVote(proposal, 'VALUE_YES');
     },
     async onVoteNo(proposal) {
-     await this.doVote(proposal, 'VALUE_NO' );
+      await this.doVote(proposal, 'VALUE_NO');
     },
-    async doVote(proposal, voteValue){
-      try{
+    async doVote(proposal, voteValue) {
+      try {
         this.voteLoading = true;
-        if(localStorage.getItem('selectedVoteKey') === null){
+        if (localStorage.getItem('selectedVoteKey') === null) {
           this.$notifyMessage('danger', 'No tVote key selected.');
-        }else {
+        } else {
           console.log(`user voted ${voteValue} for proposal: ${proposal.id}`);
           const time = await this.services.vegaGovernance.getTime();
           console.log('calling prepare vote');
@@ -200,7 +225,7 @@ export default {
         await this.refreshProposals();
         await this.onActiveOnlyChange(this.activeProposalsOnly);
         this.voteLoading = false;
-      }catch (e) {
+      } catch (e) {
         this.$notifyMessage('danger', 'Vote failed.');
         this.voteLoading = false;
       }

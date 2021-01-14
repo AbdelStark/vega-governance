@@ -74,6 +74,18 @@ export default class VegaGovernance {
         return await data;
     }
 
+    async getTVoteBalance(partyID){
+        const accountsResponse = await this.listAccounts(partyID);
+        if (Array.isArray(accountsResponse.data.accounts)) {
+            for(const account of accountsResponse.data.accounts) {
+                if (account.asset === localStorage.getItem('tVoteAssetId') ) {
+                    return parseInt(account.balance);
+                }
+            }
+        }
+        return 0;
+    }
+
     async submitTransaction(tx, type = "TYPE_COMMIT"){
         try {
             const requestPayload = {
