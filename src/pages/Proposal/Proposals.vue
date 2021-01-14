@@ -183,7 +183,7 @@ export default {
           console.log('calling prepare vote');
           const prepareVoteResult = await this.services.vegaGovernance.prepareVote(
               proposal.id,
-              proposal.party.id,
+              localStorage.getItem('selectedVoteKey'),
               time.timestamp,
               voteValue
           );
@@ -197,6 +197,8 @@ export default {
           );
           console.log('sign transaction response: ', response);
         }
+        await this.refreshProposals();
+        await this.onActiveOnlyChange(this.activeProposalsOnly);
         this.voteLoading = false;
       }catch (e) {
         this.$notifyMessage('danger', 'Vote failed.');

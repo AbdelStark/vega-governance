@@ -103,6 +103,10 @@ export default class VegaGovernance {
     async listAccounts(pubKey){
         return await axios.get(`${this.endpointRest}/parties/${pubKey}/accounts`);
     }
+
+    async weightedVotes(proposal){
+
+    }
 }
 
 

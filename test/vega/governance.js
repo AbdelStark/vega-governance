@@ -1,5 +1,6 @@
 import VegaGovernance from "../../src/services/VegaGovernance";
 import VegaWallet from "../../src/services/VegaWallet";
+import {weightVotesProposal} from "./proposals";
 
 const chai = require('chai');
 const expect = chai.expect;
@@ -39,6 +40,11 @@ describe('Vega Governance', function () {
               'TYPE_COMMIT'
             );
             console.log(submitTransactionResponse);*/
+        });
+
+
+        it.only('test weight votes', async function () {
+            const result = await vegaGovernance.weightedVotes(weightVotesProposal);
         });
     });
 });
