@@ -153,7 +153,7 @@ export default {
     },
     async refreshProposals() {
       try {
-        this.proposals = [];
+        const tmpProposals = [];
         const response = await this.services.vegaGovernance.listProposals();
         const proposals = response.data.proposals;
         for(const proposal of proposals){
@@ -174,8 +174,18 @@ export default {
           proposal.voteResultProgressMax =  weightingsAllVotes;
           proposal.voteResultProgressYes = weightingsVoteFor;
           proposal.voteResultProgressNo = weightingsVoteAgainst;
-          this.proposals.push(proposal);
+          tmpProposals.push(proposal);
         }
+        this.proposals = tmpProposals.sort((a, b) => {
+
+          if (a.terms.closingDatetime > b.terms.closingDatetime) {
+            return -1;
+          }
+          if (a.terms.closingDatetime < b.terms.closingDatetime) {
+            return 1;
+          }
+          return 0;
+        });
       } catch (e) {
         this.$notifyMessage("danger", "Cannot load, check settings");
         console.error(e);
