@@ -109,12 +109,13 @@ export default class VegaGovernance {
     }
 
     async myVoteFor(partyVotes, proposalID){
+        let voteValue = null;
         for(const vote of partyVotes){
             if(vote.proposalID === proposalID){
-                return vote.value;
+                voteValue = vote.value;
             }
         }
-        return null;
+        return voteValue;
     }
 
     async listProposalsByParty(id) {
