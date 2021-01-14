@@ -64,7 +64,7 @@
                 </div>
               </div>
 
-              <div class="row mt-2">
+              <div class="row mt-2" v-if="proposal.state === 'Open'">
                 <div class="col-md-12">
                   <b-button-group>
                     <base-button :loading="voteLoading" class="btn-success" size="lg" @click="onVoteYes(proposal)">
