@@ -58,6 +58,22 @@ export default class VegaGovernance {
         return await data;
     }
 
+    async getProposal(id) {
+        const data = fetch(this.endpointGraphQL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify({
+                query: query.proposalByID,
+                variables: {id},
+            })
+        })
+            .then(r => r.json());
+        return await data;
+    }
+
     async submitTransaction(tx, type = "TYPE_COMMIT"){
         try {
             const requestPayload = {
