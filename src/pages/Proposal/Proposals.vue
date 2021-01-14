@@ -26,6 +26,11 @@
                   <h4 class="vegaLabel" v-if="proposalSubtitleTitle(proposal) !== null">
                     {{ proposalSubtitleTitle(proposal) }}</h4>
                 </div>
+                <div class="col-md-12" v-if="proposal.myVoteFor !== null">
+                  <h4 class="vegaLabel" v-if="proposalSubtitleTitle(proposal) !== null">
+                    {{ voteSentence(proposal.myVoteFor) }}
+                  </h4>
+                </div>
               </div>
               <div class="row">
                 <div class="col-md-12">
@@ -117,6 +122,8 @@ export default {
       detailsText: 'Show details',
       voteLoading: false,
       activeProposalsOnly: false,
+      partyID: localStorage.getItem('selectedVoteKey'),
+      myVotes: [],
     }
   },
   computed: {
@@ -126,9 +133,21 @@ export default {
     ])
   },
   async mounted() {
+    if (this.partyID !== null) {
+      const partyVotesResponse = await this.services.vegaGovernance.partyVotes(this.partyID);
+      this.myVotes = partyVotesResponse.data.votes;
+    }
     await this.refreshProposals();
+
   },
   methods: {
+    voteSentence(voteValue) {
+      let voteStr = 'YES'
+      if (voteValue === 'VALUE_NO') {
+        voteStr = 'NO';
+      }
+      return `I voted ${voteStr} to this proposal.`;
+    },
     voteResultProgressMax(proposal) {
       return proposal.yesVotes.length + proposal.noVotes.length;
     },
@@ -156,24 +175,26 @@ export default {
         const tmpProposals = [];
         const response = await this.services.vegaGovernance.listProposals();
         const proposals = response.data.proposals;
-        for(const proposal of proposals){
+        for (const proposal of proposals) {
           let weightingsAllVotes = 0;
           let weightingsVoteFor = 0;
           let weightingsVoteAgainst = 0;
-          for(const yesVote of proposal.yesVotes){
+          for (const yesVote of proposal.yesVotes) {
             const balance = await this.services.vegaGovernance.getTVoteBalance(yesVote.party.id);
-            weightingsAllVotes+=balance;
-            weightingsVoteFor+=balance;
+            weightingsAllVotes += balance;
+            weightingsVoteFor += balance;
           }
-          for(const noVote of proposal.noVotes){
+          for (const noVote of proposal.noVotes) {
             const balance = await this.services.vegaGovernance.getTVoteBalance(noVote.party.id);
-            weightingsAllVotes+=balance;
-            weightingsVoteAgainst+=balance;
+            weightingsAllVotes += balance;
+            weightingsVoteAgainst += balance;
           }
-          console.log(weightingsAllVotes, weightingsVoteFor, weightingsVoteAgainst);
-          proposal.voteResultProgressMax =  weightingsAllVotes;
+          proposal.voteResultProgressMax = weightingsAllVotes;
           proposal.voteResultProgressYes = weightingsVoteFor;
           proposal.voteResultProgressNo = weightingsVoteAgainst;
+
+          const myVoteFor = await this.services.vegaGovernance.myVoteFor(this.myVotes, proposal.id);
+          proposal.myVoteFor = myVoteFor;
           tmpProposals.push(proposal);
         }
         this.proposals = tmpProposals.sort((a, b) => {

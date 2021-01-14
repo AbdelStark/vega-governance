@@ -108,6 +108,15 @@ export default class VegaGovernance {
         }
     }
 
+    async myVoteFor(partyVotes, proposalID){
+        for(const vote of partyVotes){
+            if(vote.proposalID === proposalID){
+                return vote.value;
+            }
+        }
+        return null;
+    }
+
     async listProposalsByParty(id) {
         const data = fetch(this.endpointGraphQL, {
             method: 'POST',
