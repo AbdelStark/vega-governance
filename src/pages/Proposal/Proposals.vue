@@ -174,9 +174,6 @@ export default {
           proposal.voteResultProgressMax =  weightingsAllVotes;
           proposal.voteResultProgressYes = weightingsVoteFor;
           proposal.voteResultProgressNo = weightingsVoteAgainst;
-          /*proposal.voteResultProgressMax =  proposal.yesVotes.length + proposal.noVotes.length;
-          proposal.voteResultProgressYes = proposal.yesVotes.length;
-          proposal.voteResultProgressNo = proposal.noVotes.length;*/
           this.proposals.push(proposal);
         }
       } catch (e) {
