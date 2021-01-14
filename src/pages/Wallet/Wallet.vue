@@ -109,6 +109,7 @@ export default {
     ])
   },
   async mounted() {
+    console.log('selected vote key: ', this.selectedVoteKey);
     await this.loadAuthenticatedData();
   },
   methods: {

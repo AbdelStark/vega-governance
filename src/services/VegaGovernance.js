@@ -16,10 +16,20 @@ export default class VegaGovernance {
         this.endpointPrepareVote = `${this.endpointRest}/governance/prepare/vote`;
         this.endpointSubmitTransaction = `${this.endpointRest}/transaction`;
         this.endpointListAssets = `${this.endpointRest}/assets`;
+        this.endpointNetworkParameters = `${this.endpointRest}/network/parameters`;
+
     }
 
     async getTime() {
         return await axios.get(this.endpointGetTime);
+    }
+
+    async getNetworkParameters() {
+        return await axios.get(this.endpointNetworkParameters);
+    }
+
+    async partyVotes(party) {
+        return await axios.get(`${this.endpointRest}/parties/${party}/votes`);
     }
 
     async prepareVote(proposalID, partyID, timestamp, voteValue) {

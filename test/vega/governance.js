@@ -12,8 +12,9 @@ const vegaWallet = new VegaWallet('https://wallet.testnet.vega.xyz');
 describe('Vega Governance', function () {
     describe('#endtoend()', function () {
         it.only('should work', async function () {
+            const response = await vegaGovernance.partyVotes('7f26da067e622195c36bbbac50412c6c2765d4cc63298a20eb531bd58d3a6431');
+            console.log(response.data.votes);
             const time = await vegaGovernance.getTime();
-            //console.log(time);
             const proposalID = '84253a22f10b52fbad7f2c517b30bd790b45e24cd6c5bbf18511dfa888b262b3';
             const partyID = 'ac9d9fe2e5904308d9c0f6fe758f8a4f4dd9636ab35584f95909010b7ec7edc9';
             const timestamp = time.timestamp;
@@ -24,7 +25,6 @@ describe('Vega Governance', function () {
                 timestamp,
                 voteValue
             );
-            console.log(prepareVoteResult);
             const blob = prepareVoteResult.data.blob;
             await vegaWallet.login(walletID, passphrase);
             const keys = await vegaWallet.listKeys();

@@ -3,16 +3,21 @@
     <fade-transition :duration="100" mode="out-in">
       <!-- your content here -->
       <div>
+        <div class="row">
+          <div class="col-md-12 ml-2 mb-2"
+               style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;color: white">
+            <b-form-checkbox
+                v-on:change="onActiveOnlyChange"
+                v-model="activeProposalsOnly" name="check-button" switch size="lg">
+              Open only
+            </b-form-checkbox>
+          </div>
+        </div>
         <div v-for="proposal in proposals" :key="proposal.id">
           <card type="user">
             <p class="card-text">
             </p>
             <div class="author">
-              <!--div class="block block-one"></div>
-              <div class="block block-two"></div>
-              <div class="block block-three"></div>
-              <div class="block block-four"></div-->
-
               <div class="row">
                 <div class="col-md-12">
                   <h1 style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">{{
@@ -44,16 +49,16 @@
                 <div class="col-md-12">
                   <b-progress
                       height="3rem"
-                      :max="proposal.yesVotes.length+proposal.noVotes.length">
+                      :max="voteResultProgressMax(proposal)">
                     <b-progress-bar
                         class="progressBarText"
                         show-progress
-                        :value="proposal.yesVotes.length"
+                        :value="voteResultProgressYes(proposal)"
                         variant="success"></b-progress-bar>
                     <b-progress-bar
                         class="progressBarText"
                         show-progress
-                        :value="proposal.noVotes.length"
+                        :value="voteResultProgressNo(proposal)"
                         variant="danger"></b-progress-bar>
                   </b-progress>
                 </div>
@@ -111,6 +116,7 @@ export default {
       proposals: [],
       detailsText: 'Show details',
       voteLoading: false,
+      activeProposalsOnly: false,
     }
   },
   computed: {
@@ -120,14 +126,39 @@ export default {
     ])
   },
   async mounted() {
-    try {
-      const response = await this.services.vegaGovernance.listProposals();
-      this.proposals = response.data.proposals;
-    } catch (e) {
-      this.$notifyMessage("danger", "Cannot load, check settings");
-    }
+    await this.refreshProposals();
   },
   methods: {
+    voteResultProgressMax(proposal){
+      return proposal.yesVotes.length+proposal.noVotes.length;
+    },
+    voteResultProgressYes(proposal){
+      return proposal.yesVotes.length;
+    },
+    voteResultProgressNo(proposal){
+      return proposal.noVotes.length;
+    },
+    async onActiveOnlyChange(activeOnly){
+      if(activeOnly) {
+        const filteredProposals = [];
+        this.proposals.forEach(proposal => {
+          if (proposal.state === 'Open') {
+            filteredProposals.push(proposal);
+          }
+        });
+        this.proposals = filteredProposals;
+      }else{
+        await this.refreshProposals();
+      }
+    },
+    async refreshProposals(){
+      try {
+        const response = await this.services.vegaGovernance.listProposals();
+        this.proposals = response.data.proposals;
+      } catch (e) {
+        this.$notifyMessage("danger", "Cannot load, check settings");
+      }
+    },
     toggleDetailsText() {
       if (this.detailsText === 'Show details') {
         this.detailsText = 'Hide details';

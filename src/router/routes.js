@@ -6,6 +6,7 @@ import Debug from "@/pages/Debug/Debug";
 import Wallet from "@/pages/Wallet/Wallet";
 import Settings from "@/pages/Settings/Settings";
 import About from "@/pages/Wallet/About";
+import MyVotes from "@/pages/Proposal/MyVotes";
 
 const routes = [
   {
@@ -33,6 +34,11 @@ const routes = [
         path: 'about',
         name: 'about',
         components: {default: About}
+      },
+      {
+        path: 'myvotes',
+        name: 'myvotes',
+        components: {default: MyVotes}
       },
       {
         path: 'debug',
