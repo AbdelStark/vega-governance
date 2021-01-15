@@ -127,6 +127,8 @@ export default {
       const isSuccess = await this.services.vegaWallet.logout();
       if (isSuccess) {
         localStorage.removeItem("vega-token");
+        localStorage.removeItem('selectedVoteKey');
+
         this.$router.push("/");
       }
     },
