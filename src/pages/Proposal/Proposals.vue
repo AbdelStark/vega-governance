@@ -35,7 +35,7 @@
               <div class="row">
                 <div class="col-md-12">
                   <h4 class="vegaTitle">DEADLINE</h4>
-                  <h4 class="vegaLabel">{{ formatDate(proposal.datetime) }}</h4>
+                  <h4 class="vegaLabel">{{ formatDate(proposal.terms.closingDatetime) }}</h4>
                 </div>
               </div>
               <div class="row">
